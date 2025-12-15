@@ -1,0 +1,1959 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Michel Prediction Engine</title>
+  <meta name="description" content="Forecast cards for markets, politics, sports, culture, crypto, and more." />
+
+  <style>
+    :root{
+      --bg0:#05060a;
+      --bg1:#070a14;
+      --panel:#0b1226cc;
+      --panel2:#0a1022cc;
+      --line:#1a2a55;
+      --soft:#0f1733;
+      --text:#e9eeff;
+      --muted:#a9b5df;
+      --muted2:#7f8bb4;
+      --accent:#6ee7ff;
+      --accent2:#a78bfa;
+      --good:#34d399;
+      --warn:#fbbf24;
+      --bad:#fb7185;
+
+      --shadow: 0 20px 60px rgba(0,0,0,.55);
+      --shadow2: 0 8px 26px rgba(0,0,0,.45);
+
+      --radius: 18px;
+      --radius2: 26px;
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 12% 18%, rgba(110,231,255,.12), transparent 65%),
+        radial-gradient(900px 700px at 82% 25%, rgba(167,139,250,.12), transparent 62%),
+        radial-gradient(1000px 900px at 55% 95%, rgba(52,211,153,.06), transparent 62%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
+    }
+
+    /* subtle grid */
+    .grid-overlay{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.22;
+      background:
+        linear-gradient(to right, rgba(26,42,85,.25) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(26,42,85,.25) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(circle at 50% 30%, rgba(0,0,0,1), rgba(0,0,0,.25) 55%, rgba(0,0,0,.0) 80%);
+    }
+
+    .wrap{
+      width:min(1200px, calc(100% - 32px));
+      margin:0 auto;
+      padding:20px 0 64px;
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, rgba(5,6,10,.78), rgba(5,6,10,.35));
+      border-bottom:1px solid rgba(26,42,85,.55);
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:14px 0;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 260px;
+    }
+
+    .logo{
+      width:38px;height:38px;border-radius:12px;
+      background:
+        radial-gradient(circle at 35% 30%, rgba(110,231,255,.9), rgba(110,231,255,.2) 55%, rgba(110,231,255,0) 72%),
+        radial-gradient(circle at 75% 70%, rgba(167,139,250,.9), rgba(167,139,250,.2) 55%, rgba(167,139,250,0) 72%),
+        linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: var(--shadow2);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo:after{
+      content:"";
+      position:absolute; inset:-50%;
+      background: conic-gradient(from 180deg, rgba(110,231,255,.0), rgba(110,231,255,.12), rgba(167,139,250,.0), rgba(167,139,250,.12), rgba(110,231,255,.0));
+      animation: spin 10s linear infinite;
+      opacity:.7;
+    }
+    @keyframes spin{ to{ transform:rotate(360deg); } }
+
+    .titleblock{
+      display:flex;
+      flex-direction:column;
+      line-height:1.1;
+    }
+    .title{
+      font-weight:780;
+      letter-spacing:.2px;
+      font-size:16px;
+    }
+    .subtitle{
+      font-family:var(--mono);
+      color:var(--muted2);
+      font-size:12px;
+      margin-top:4px;
+    }
+
+    .controls{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:10px;
+      flex:1;
+      min-width: 280px;
+    }
+
+    .pill{
+      border:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(11,18,38,.75), rgba(10,16,34,.45));
+      border-radius: 999px;
+      padding:10px 12px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.35);
+    }
+
+    .search{
+      width:min(420px, 52vw);
+    }
+    .search input{
+      width:100%;
+      border:0;
+      outline:none;
+      background:transparent;
+      color:var(--text);
+      font-size:13px;
+      font-family:var(--mono);
+    }
+    .search .hint{
+      color:var(--muted2);
+      font-size:12px;
+      font-family:var(--mono);
+      white-space:nowrap;
+    }
+
+    .select{
+      gap:8px;
+      padding:10px 12px;
+    }
+    select{
+      border:0;
+      outline:none;
+      background:transparent;
+      color:var(--text);
+      font-family:var(--mono);
+      font-size:12px;
+      cursor:pointer;
+    }
+
+    .content{
+      padding-top: 18px;
+    }
+
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin: 10px 0 18px;
+    }
+    .tab{
+      font-family:var(--mono);
+      font-size:12px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(11,18,38,.60), rgba(10,16,34,.35));
+      color: var(--muted);
+      cursor:pointer;
+      user-select:none;
+      transition: transform .12s ease, border-color .12s ease, color .12s ease;
+    }
+    .tab:hover{ transform: translateY(-1px); border-color: rgba(110,231,255,.35); color: var(--text); }
+    .tab.active{
+      color: var(--text);
+      border-color: rgba(110,231,255,.55);
+      background:
+        radial-gradient(120px 60px at 30% 40%, rgba(110,231,255,.18), transparent 70%),
+        radial-gradient(120px 60px at 75% 55%, rgba(167,139,250,.14), transparent 70%),
+        linear-gradient(180deg, rgba(11,18,38,.75), rgba(10,16,34,.45));
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .card{
+      grid-column: span 4;
+      border-radius: var(--radius2);
+      border: 1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(140px 90px at 18% 22%, rgba(110,231,255,.16), transparent 65%),
+        radial-gradient(150px 95px at 85% 22%, rgba(167,139,250,.13), transparent 66%),
+        linear-gradient(180deg, rgba(11,18,38,.72), rgba(10,16,34,.42));
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+      position:relative;
+      cursor:pointer;
+      transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
+      min-height: 198px;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      border-color: rgba(110,231,255,.30);
+      box-shadow: 0 22px 70px rgba(0,0,0,.55);
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: linear-gradient(90deg, rgba(110,231,255,.0), rgba(110,231,255,.14), rgba(167,139,250,.0));
+      opacity:.28;
+      transform: translateX(-40%);
+      filter: blur(10px);
+      transition: transform .28s ease;
+    }
+    .card:hover::before{ transform: translateX(15%); }
+
+    .card-inner{
+      position:relative;
+      padding: 14px 14px 12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .kicker-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .chip{
+      font-family:var(--mono);
+      font-size:11px;
+      padding:6px 10px;
+      border-radius:999px;
+      background: rgba(8,12,26,.55);
+      border:1px solid rgba(255,255,255,.10);
+      color: var(--muted);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
+    }
+    .dot{
+      width:7px;height:7px;border-radius:99px;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(110,231,255,.12);
+    }
+    .dot.good{ background: var(--good); box-shadow: 0 0 0 3px rgba(52,211,153,.14); }
+    .dot.warn{ background: var(--warn); box-shadow: 0 0 0 3px rgba(251,191,36,.14); }
+    .dot.bad{ background: var(--bad); box-shadow: 0 0 0 3px rgba(251,113,133,.14); }
+
+    .when{
+      font-family:var(--mono);
+      font-size:11px;
+      color: var(--muted2);
+      white-space:nowrap;
+    }
+
+    .h{
+      font-weight:780;
+      font-size:15px;
+      letter-spacing:.2px;
+      line-height:1.25;
+      margin-top: 2px;
+    }
+
+    .desc{
+      color: var(--muted);
+      font-size:13px;
+      line-height:1.35;
+      margin-top: 2px;
+      min-height: 44px;
+    }
+
+    .meter{
+      margin-top:auto;
+      padding-top: 6px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .bar{
+      height:10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+      position:relative;
+    }
+    .fill{
+      height:100%;
+      width:0%;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(110,231,255,.9), rgba(167,139,250,.85));
+      box-shadow: 0 8px 18px rgba(110,231,255,.12);
+      transition: width .35s ease;
+    }
+
+    .meta{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      font-family:var(--mono);
+      font-size:11px;
+      color: var(--muted2);
+    }
+
+
+    .scenarios{
+      margin-top:10px;
+      padding:10px 10px;
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:14px;
+      background: rgba(255,255,255,.03);
+    }
+    .scenarios.mini{
+      padding:8px 10px;
+    }
+    .shead{
+      font-family: var(--mono);
+      font-size:11px;
+      color: var(--muted2);
+      margin-bottom:6px;
+    }
+    .shorizon{
+      font-family: var(--mono);
+      font-size:11px;
+      color: var(--muted2);
+      margin-top:-2px;
+      margin-bottom:8px;
+    }
+    .srow{
+      display:grid;
+      grid-template-columns: 1fr 110px 40px;
+      gap:10px;
+      align-items:center;
+      margin:6px 0;
+    }
+    .srow.mini{
+      grid-template-columns: 26px 1fr 38px;
+      margin:5px 0;
+    }
+    .sname{
+      font-size:12px;
+      color: var(--text);
+      line-height:1.2;
+    }
+    .srow.mini .sname{
+      font-family: var(--mono);
+      font-size:11px;
+      color: var(--muted);
+    }
+    .sbar{
+      height:10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.08);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.06);
+    }
+    .sfill{
+      height:100%;
+      width:0%;
+      border-radius:999px;
+      transition: width .35s ease;
+      box-shadow: 0 8px 18px rgba(110,231,255,.10);
+    }
+    .sfill.good{ background: var(--good); }
+    .sfill.warn{ background: var(--warn); }
+    .sfill.bad{ background: var(--bad); }
+
+    .spct{
+      font-family: var(--mono);
+      font-size:11px;
+      color: var(--muted2);
+      text-align:right;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(8,12,26,.45);
+      font-family:var(--mono);
+      font-size:11px;
+      color: var(--muted);
+      white-space:nowrap;
+    }
+
+    /* Detail view */
+    .view{
+      display:none;
+      margin-top: 14px;
+      border-radius: var(--radius2);
+      border: 1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(11,18,38,.72), rgba(10,16,34,.42));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .view.active{ display:block; }
+
+    .view-head{
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid rgba(26,42,85,.7);
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+      background:
+        radial-gradient(260px 150px at 18% 25%, rgba(110,231,255,.14), transparent 70%),
+        radial-gradient(260px 150px at 85% 20%, rgba(167,139,250,.12), transparent 70%),
+        linear-gradient(180deg, rgba(11,18,38,.75), rgba(10,16,34,.48));
+    }
+
+    .view-title{
+      font-size: 18px;
+      font-weight: 820;
+      line-height: 1.25;
+      margin:0;
+    }
+
+    .view-sub{
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+      max-width: 72ch;
+    }
+
+    .btn{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(8,12,26,.55);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      transition: transform .12s ease, border-color .12s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: rgba(110,231,255,.35); }
+    .btn.secondary{ color: var(--muted); }
+
+    .view-body{
+      padding: 16px 18px 18px;
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 14px;
+    }
+
+    .panel{
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(8,12,26,.35);
+      padding: 14px;
+    }
+
+    .panel h3{
+      margin:0 0 10px 0;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+
+    .list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin:0;
+      padding:0;
+      list-style:none;
+    }
+    .li{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      color: var(--text);
+      line-height:1.4;
+      font-size: 13px;
+    }
+    .li .b{
+      width:22px;
+      height:22px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family: var(--mono);
+      color: var(--muted2);
+      flex: 0 0 auto;
+      margin-top: 1px;
+    }
+
+    .kv{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    .kv .row{
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.14);
+      padding:10px 10px;
+    }
+    .kv .k{
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted2);
+    }
+    .kv .v{
+      margin-top:6px;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .foot{
+      margin-top: 18px;
+      color: var(--muted2);
+      font-family: var(--mono);
+      font-size: 11px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      opacity:.95;
+    }
+
+
+    /* MPE analysis (stock template) */
+    .mpe-block{
+      margin-top:12px;
+      padding:14px;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:16px;
+      background: rgba(255,255,255,.03);
+    }
+    .mpe-subtle{
+      font-family: var(--mono);
+      font-size:12px;
+      color: var(--muted2);
+      letter-spacing: .3px;
+      text-transform: uppercase;
+    }
+    .mpe-chips{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .mpe-chip2{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(8,12,26,.45);
+      font-family:var(--mono);
+      font-size:11px;
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .mpe-table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      margin-top:10px;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .mpe-table th{
+      text-align:left;
+      padding:10px 10px;
+      font-family: var(--mono);
+      font-size:11px;
+      color: var(--muted2);
+      background: rgba(0,0,0,.18);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .mpe-table td{
+      vertical-align:top;
+      padding:10px 10px;
+      font-size:13px;
+      line-height:1.45;
+      color: var(--text);
+      border-bottom:1px solid rgba(255,255,255,.06);
+      background: rgba(255,255,255,.02);
+    }
+    .mpe-table tr:last-child td{ border-bottom:0; }
+    .mpe-weight{
+      font-family: var(--mono);
+      font-size:12px;
+      color: var(--text);
+      white-space:nowrap;
+    }
+    .mpe-miniul{
+      margin:0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size:12px;
+      line-height:1.45;
+    }
+    .mpe-triggergrid{
+      margin-top:10px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    .mpe-triggerpanel{
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.14);
+      padding:10px 10px;
+    }
+    .mpe-triggerpanel h4{
+      margin:0 0 8px 0;
+      font-family: var(--mono);
+      font-size:11px;
+      color: var(--muted2);
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+    .mpe-triggerpanel ul{
+      margin:0;
+      padding-left:18px;
+      color: var(--text);
+      font-size:13px;
+      line-height:1.45;
+    }
+    .mpe-triggerpanel--risk{
+      border-color: rgba(251,113,133,.25);
+    }
+    .mpe-cite{
+      margin:10px 0 0;
+      padding-left:18px;
+    }
+    .mpe-cite li{
+      margin:8px 0;
+      color: var(--muted);
+      font-size:12px;
+      line-height:1.45;
+    }
+    .mpe-cite a{
+      color: var(--accent);
+      text-decoration:none;
+    }
+    @media (max-width: 980px){
+      .mpe-triggergrid{ grid-template-columns: 1fr; }
+    }
+
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .card{ grid-column: span 6; }
+      .view-body{ grid-template-columns: 1fr; }
+      .brand{ min-width: 220px; }
+    }
+    @media (max-width: 620px){
+      .controls{ flex-direction:column; align-items:stretch; }
+      .search{ width:100%; }
+      .card{ grid-column: span 12; }
+      .topbar{ flex-direction:column; align-items:stretch; }
+      .brand{ min-width: 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <header>
+    <div class="wrap">
+      <div class="topbar">
+        <div class="brand" role="banner">
+          <div class="logo" aria-hidden="true"></div>
+          <div class="titleblock">
+            <div class="title">The Michel Prediction Engine</div>
+            <div class="subtitle">MPE, cards first, drivers visible</div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="pill search" title="Search title, summary, tags">
+            <span class="hint">SEARCH</span>
+            <input id="q" placeholder="type: 'oecs', 'bitcoin', 'election', 'earnings' ..." autocomplete="off" />
+          </div>
+
+          <div class="pill select" title="Sort">
+            <span class="hint">SORT</span>
+            <select id="sort">
+              <option value="updatedDesc">Updated (newest)</option>
+              <option value="dueAsc">Due date (soonest)</option>
+              <option value="confidenceDesc">Confidence (high to low)</option>
+            </select>
+          </div>
+
+          <button class="btn secondary" id="clear">Clear</button>
+        </div>
+      </div>
+
+      <div class="tabs" id="tabs"></div>
+    </div>
+  </header>
+
+  <main class="wrap content">
+    <section id="listView">
+      <div class="grid" id="grid"></div>
+      <div class="foot">
+        <div id="status">Loading…</div>
+        <div>GitHub Pages ready, single file MVP</div>
+      </div>
+    </section>
+
+    <section class="view" id="detailView" aria-live="polite"></section>
+  </main>
+
+  <script>
+    /* ==========================
+       1) YOUR DATA MODEL (EDIT HERE)
+       ========================== */
+
+    const CATEGORIES = [
+      "All",
+      "Prediction Markets",
+      "Politics",
+      "Sports",
+      "Culture",
+      "Crypto",
+      "Climate",
+      "Economics",
+      "Tomorrow's Paper",
+      "Companies",
+      "Financials",
+      "Tech & Science",
+      "Health",
+      "World",
+      "Caribbean",
+      "OECS"
+    ];
+
+    // Confidence is 0 to 100.
+    // status: "good" | "warn" | "bad" (drives the dot color).
+    // due: ISO date string.
+    // updated: ISO date string.
+    // marketsLink is optional, used when category is Prediction Markets.
+    const PREDICTIONS = [
+      
+
+      {
+        id: "reach-oslo-scenario-weighted",
+        category: "Financials",
+        title: "REACH (Oslo Børs), scenario-weighted view, 3 to 6 month horizon",
+        summary: "Q3 showed weaker revenue and EBIT year over year, with stable EBITDA margin, key focus is utilization normalization and investment-phase execution.",
+        due: "2026-03-31",
+        updated: "2025-12-13",
+        confidence: 57,
+        status: "warn",
+        call: "Base case (45%): mixed execution and limited re-rating while utilization normalizes unevenly during the investment phase. Upside case (35%): utilization improves and ramp costs fade, supporting an EBIT rebound. Downside case (20%): idle time persists and ramp or commitment costs remain elevated, raising execution risk. Weight-shifters: evidence of utilization improvement and EBIT recovery shifts probability from A to B, repeat utilization weakness shifts probability from A to C.",
+        band: "Medium",
+        drivers: [
+          "Q3 revenue and EBIT declined year over year, primary cited drivers included idle time and start-up or implementation costs.",
+          "EBITDA margin remained high and broadly stable, suggesting core unit economics held even as utilization weakened.",
+          "Liquidity and financing posture matter during the investment phase, key variable is whether utilization improves fast enough to offset ramp costs and commitments."
+        ],
+        assumptions: [
+          "No abrupt sector-wide demand shock within the horizon.",
+          "Next reporting provides clearer evidence on utilization and cost normalization versus persistence.",
+          "Financing access remains steady while the investment phase continues."
+        ],
+        scenario_outlook: {
+          horizon: "3-6 months",
+          scenarios: [
+            { id: "B", label: "SIDE. Operational normalization", weight: 0.35 },
+            { id: "A", label: "UP. Mixed execution, limited re-rating", weight: 0.45 },
+            { id: "C", label: "DOWN. Extended execution drag", weight: 0.20 }
+          ]
+        },
+
+        sources: [
+          { label: "Reach Subsea investor relations", url: "https://reachsubsea.no/investor-relations/" },
+          { label: "Euronext Live, REACH (XOSL)", url: "https://live.euronext.com/en/product/equities/NO0010199151-XOSL" }
+        ],
+        tags: ["reach","oslo","xosl","subsea","offshore","scenario","probabilities"]
+      },
+      
+      {
+        id: "eqnr-oslo-90d-scenario-weighted",
+        category: "Financials",
+        title: "EQNR (Oslo Børs), scenario-weighted view, 90 day horizon",
+        summary: "Equinor over the next 90 days is dominated by energy macro and risk sentiment, with buybacks and dividend framing providing partial support, and permitting plus renewables headlines adding optional volatility.",
+        due: "2026-03-14",
+        updated: "2025-12-14",
+        confidence: 60,
+        status: "warn",
+        call: "Base case (55%): range-bound oil and European gas, steady buyback cadence into February, and no fresh permitting shock, results in choppy but resilient trading with capital returns acting as support. Upside case (25%): energy complex bid plus quieter policy tape allows multiple expansion and clearer momentum. Downside case (20%): macro flips risk-off or a new offshore wind permitting or impairment headline resurfaces, raising drawdown risk. Weight-shifters: sustained strength in oil and gas and improving equity risk appetite shifts weight from A to B, a policy disruption or sharp macro selloff shifts weight from A to C.",
+        band: "Medium",
+        most_likely_driver: "Energy macro, especially oil and European gas pricing, sets the short-horizon regime, capital returns and policy headlines modulate the path.",
+        drivers: [
+          "Energy macro, oil and European gas pricing, and broad risk sentiment tend to overwhelm single-company factors on a 90 day horizon.",
+          "Capital returns matter, Equinor is actively executing the fourth tranche of its 2025 share buy-back programme and maintains a clearly communicated dividend framework.",
+          "Permitting and renewables headlines, especially US offshore wind policy and impairment narratives, can re-price the multiple quickly even when core upstream cashflows are steady."
+        ],
+        assumptions: [
+          "No abrupt geopolitical shock that forces a step-change in oil and gas pricing beyond normal volatility.",
+          "Share buy-back activity continues within the announced tranche window without disruption.",
+          "No major unanticipated production interruption dominates headlines for multiple consecutive weeks."
+        ],
+        scenario_outlook: {
+          horizon: "90 days",
+          scenarios: [
+            { id: "A", label: "BASE. Cash-return carry, range-bound macro", weight: 0.55 },
+            { id: "B", label: "UP. Energy bid, quieter policy tape", weight: 0.25 },
+            { id: "C", label: "DOWN. Risk-off or renewed policy shock", weight: 0.20 }
+          ]
+        },
+
+        mpe_analysis: {
+          ticker: "EQNR",
+          exchange: "Oslo Børs",
+          horizon_days: 90,
+          horizon_end: "2026-03-14",
+          as_of: "2025-12-12",
+          price_anchor_label: "LAST TRADED (Euronext)",
+          price_anchor: "232.70",
+          currency: "NOK",
+          volatility_posture: "Moderate",
+          driver_chips: [
+            "Energy macro, oil and European gas",
+            "Capital returns, dividends and buybacks",
+            "Norwegian shelf execution, uptime and unit costs",
+            "Transition and permitting headlines, offshore wind and impairments",
+            "Risk sentiment, equity rotation"
+          ],
+          verified_anchors: [
+            {
+              title: "Buyback tranche window",
+              detail: "Fourth tranche 2025 share buy-back tranche runs from 30 October 2025 to no later than 2 February 2026, and transactions are reported under regulated news.",
+              source: "Euronext company news",
+              url: "https://live.euronext.com/en/products/equities/company-news/2025-12-09-equinor-asa-share-buy-back-fourth-tranche-2025"
+            },
+            {
+              title: "Buyback programme launch details",
+              detail: "Equinor announced the fourth and final tranche of up to USD 1,266 million as part of the 2025 share buy-back programme.",
+              source: "Equinor news",
+              url: "https://www.equinor.com/news/20251029-fourth-tranche-2025-share-buy-back-programme"
+            },
+            {
+              title: "Dividend baseline is explicit",
+              detail: "Key information for the third quarter 2025 cash dividend lists the cash dividend amount as USD 0.37 per share, with Oslo Børs ex-date and payment date details.",
+              source: "Equinor news",
+              url: "https://www.equinor.com/news/20251029-key-information-cash-dividend-third-quarter-2025"
+            },
+            {
+              title: "US offshore wind policy risk is real",
+              detail: "Equinor’s second quarter 2025 results note an impairment tied to US offshore wind regulatory changes, and related headlines can shift sentiment quickly.",
+              source: "Equinor results",
+              url: "https://www.equinor.com/news/equinor-second-quarter-2025-results"
+            }
+          ],
+          scenarios: [
+            {
+              id: "A",
+              name: "Base, cash-return carry with range-bound macro",
+              weight_pct: 55,
+              conditions: [
+                "Oil and gas range-bound, risk sentiment stable",
+                "Buyback tranche continues into February",
+                "No fresh offshore wind permitting shock beyond what is already priced"
+              ],
+              expected_behavior: "Choppy but resilient trading, supported by buybacks and dividend framing, with headline sensitivity remaining."
+            },
+            {
+              id: "B",
+              name: "Upside, energy bid plus reduced policy noise",
+              weight_pct: 25,
+              conditions: [
+                "Energy complex bid, risk-on rotation",
+                "No major production interruption headlines",
+                "Quieter stretch on offshore wind and permitting headlines"
+              ],
+              expected_behavior: "Multiple expansion becomes visible, momentum improves, and capital-return support reinforces the bid."
+            },
+            {
+              id: "C",
+              name: "Downside, macro risk-off or renewed transition shock",
+              weight_pct: 20,
+              conditions: [
+                "Oil sells off hard or broader equities de-rate",
+                "New offshore wind or permitting disruption headline",
+                "Operational interruptions dominate the tape for weeks"
+              ],
+              expected_behavior: "Faster drawdown risk, EQNR trades as macro beta, and the discount widens."
+            }
+          ],
+          triggers: {
+            upside: [
+              "Oil and European gas trend upward for multiple weeks, with risk sentiment improving.",
+              "Buyback cadence remains steady through January, no tranche disruption.",
+              "No new impairment, permitting, or regulatory surprises tied to offshore wind."
+            ],
+            downside: [
+              "Macro flips to recession-style risk-off, cyclicals de-rate broadly.",
+              "New offshore wind regulatory change or permitting disruption hits project economics.",
+              "Production or operational interruptions become the dominant narrative for multiple weeks."
+            ]
+          },
+          citations: [
+            {
+              label: "Euronext Live, EQUINOR (NO0010096985, XOSL), last traded and regulated news",
+              url: "https://live.euronext.com/en/product/equities/NO0010096985-XOSL",
+              note: "Price anchor and regulated news list"
+            },
+            {
+              label: "Euronext company news, Share buy-back, fourth tranche for 2025",
+              url: "https://live.euronext.com/en/products/equities/company-news/2025-12-09-equinor-asa-share-buy-back-fourth-tranche-2025",
+              note: "Tranche window and transaction reporting"
+            },
+            {
+              label: "Equinor, fourth tranche of the 2025 share buy-back programme",
+              url: "https://www.equinor.com/news/20251029-fourth-tranche-2025-share-buy-back-programme",
+              note: "Programme details and tranche sizing"
+            },
+            {
+              label: "Equinor, key information relating to cash dividend for the third quarter 2025",
+              url: "https://www.equinor.com/news/20251029-key-information-cash-dividend-third-quarter-2025",
+              note: "USD 0.37 cash dividend details"
+            },
+            {
+              label: "Equinor, second quarter 2025 results, offshore wind impairment context",
+              url: "https://www.equinor.com/news/equinor-second-quarter-2025-results",
+              note: "Impairment linked to US offshore wind regulatory changes"
+            }
+          ]
+        },
+
+        sources: [
+          { label: "Euronext Live, EQUINOR (XOSL)", url: "https://live.euronext.com/en/product/equities/NO0010096985-XOSL" },
+          { label: "Equinor investor dividend page", url: "https://www.equinor.com/investors/our-dividend" }
+        ],
+        tags: ["eqnr","equinor","oslo","xosl","energy","oil","gas","buyback","dividend","scenario","90d"]
+      },
+      {
+        id: "dnb-oslo-90d-scenario-weighted",
+        category: "Financials",
+        title: "DNB (Oslo Børs), scenario-weighted view, 90 day horizon",
+        summary: "DNB over the next 90 days likely trades modestly range-bound to slightly higher, supported by net interest income resilience and capital strength, but capped by uncertainty around the timing of rate cuts and credit-cycle headlines.",
+        due: "2026-03-14",
+        updated: "2025-12-14",
+        confidence: 58,
+        status: "warn",
+        call: "Base case (55%): DNB trades sideways to slightly higher over the next 90 days, supported by still-elevated net interest margins and capital strength, but lacking a clear catalyst for a sustained re-rating while the market debates rate-cut timing. Upside case (25%): rate cuts get pushed out, margin compression fears fade, and credit headlines stay quiet, supporting modest multiple expansion. Downside case (20%): rate-cut expectations accelerate, and or credit and commercial real estate headlines worsen, pushing provisioning fears to the forefront and de-rating the stock. Weight-shifters: higher-for-longer signals and steady margin commentary shift weight from A to B, faster rate-cut pricing or rising provisions shift weight from A to C.",
+        band: "Medium",
+        most_likely_driver: "Rate expectations and the net interest margin trajectory set the short-horizon regime, credit and provisioning headlines modulate sentiment.",
+        drivers: [
+          "Interest rate expectations drive the multiple, markets price the turning point well before the data confirms it.",
+          "Net interest income and margin stability are the core near-term earnings sensitivity, small spread changes matter at scale.",
+          "Credit quality and provisioning narrative can re-price the stock quickly, especially if commercial real estate stress becomes the headline.",
+          "Capital returns, dividend policy and buybacks provide support, but do not guarantee a re-rating on their own."
+        ],
+        assumptions: [
+          "No abrupt credit event that forces a step-change in provisioning beyond normal quarter-to-quarter volatility.",
+          "Rate expectations remain a debate about timing, not a sudden repricing toward aggressive cuts.",
+          "Buyback and capital return communication remains steady and consistent through the horizon."
+        ],
+        scenario_outlook: {
+          horizon: "90 days",
+          scenarios: [
+            { id: "A", label: "BASE. NIM resilience, peak-cycle narrative", weight: 0.55 },
+            { id: "B", label: "UP. Higher for longer, margins surprise", weight: 0.25 },
+            { id: "C", label: "DOWN. Faster cuts or credit stress headlines", weight: 0.20 }
+          ]
+        },
+
+        mpe_analysis: {
+          ticker: "DNB",
+          exchange: "Oslo Børs",
+          horizon_days: 90,
+          horizon_end: "2026-03-14",
+          as_of: "2025-12-11",
+          price_anchor_label: "LAST TRADED (Euronext)",
+          price_anchor: "273.60",
+          currency: "NOK",
+          volatility_posture: "Low to Moderate",
+          driver_chips: [
+            "Rate expectations, Norges Bank path",
+            "Net interest margin stability, pricing and spreads",
+            "Credit quality and provisioning narrative",
+            "Commercial real estate headline sensitivity",
+            "Capital returns, dividends and buybacks"
+          ],
+          verified_anchors: [
+            {
+              title: "Price anchor and regulated news list",
+              detail: "Euronext Live lists DNB Bank ASA with last traded price and a stream of regulated news releases for tracking programme updates.",
+              source: "Euronext Live",
+              url: "https://live.euronext.com/en/product/equities/NO0010161896-XOSL"
+            },
+            {
+              title: "Share buy-back programme timeline",
+              detail: "DNB reports weekly status updates, including that up to 9,752,192 shares will be purchased on trading venues by 20 February 2026, with proposals to cancel and redeem shares at the next AGM.",
+              source: "DNB IR press release",
+              url: "https://www.ir.dnb.no/press-and-reports/press-releases/dnb-bank-asa-status-share-buy-back-programme-after-week-49-2025"
+            },
+            {
+              title: "Dividend and ex-dividend mechanics are explicit",
+              detail: "DNB stated that the shares were quoted ex-dividend on 30 April 2025, with a dividend of NOK 16.75 per share distributed to shareholders as of 29 April 2025 and payment around 9 May 2025.",
+              source: "DNB IR press release",
+              url: "https://www.ir.dnb.no/press-and-reports/press-releases/shares-dnb-bank-asa-will-be-quoted-ex-dividend-today-2325303"
+            },
+            {
+              title: "Q3 2025 report confirms margin pressure but stable NII",
+              detail: "The Q3 2025 report notes net interest income remained stable quarter over quarter, despite narrowing spreads, with negative margin effects offset by higher lending volumes.",
+              source: "DNB Q3 2025 report (PDF)",
+              url: "https://mb.cision.com/Public/1975/4254060/a879f5d1b4268bda.pdf"
+            }
+          ],
+          scenarios: [
+            {
+              id: "A",
+              name: "Base, strong earnings, peak narrative persists",
+              weight_pct: 55,
+              conditions: [
+                "Rate-cut debate continues, but no rapid repricing toward aggressive cuts",
+                "Margins soften slightly but remain strong, net interest income stays resilient",
+                "Credit headlines remain contained, provisions do not step-change"
+              ],
+              expected_behavior: "Range-bound to gently positive drift, supported by capital strength and dividend framing, with rallies capped by peak-cycle logic."
+            },
+            {
+              id: "B",
+              name: "Upside, higher for longer and margin resilience surprises",
+              weight_pct: 25,
+              conditions: [
+                "Rate cuts pushed further out, higher-for-longer narrative strengthens",
+                "Margin compression fears fade, pricing discipline holds",
+                "No material deterioration in credit quality narrative"
+              ],
+              expected_behavior: "Modest multiple expansion and relative outperformance, DNB trades more like a quality compounder than a peak-cycle bank."
+            },
+            {
+              id: "C",
+              name: "Downside, faster cuts or credit stress dominates the tape",
+              weight_pct: 20,
+              conditions: [
+                "Rate-cut expectations accelerate sharply",
+                "Commercial real estate or household stress becomes a dominant headline theme",
+                "Provisioning rises faster than expected, de-rating pressure increases"
+              ],
+              expected_behavior: "Faster drawdown risk, the stock de-rates on peak earnings concerns even if underlying solvency remains sound."
+            }
+          ],
+          triggers: {
+            upside: [
+              "Central bank communication shifts toward higher for longer, and rate-cut expectations move out.",
+              "Management commentary supports margin stability, with less evidence of spread compression.",
+              "Credit and provisioning headlines stay quiet, commercial real estate fears ease."
+            ],
+            downside: [
+              "Market reprices toward faster cuts, compressing bank multiples.",
+              "Loan loss provisions increase faster than expected, credit narrative turns.",
+              "Commercial real estate stress becomes the dominant driver across Nordic banks."
+            ]
+          },
+          citations: [
+            {
+              label: "Euronext Live, DNB Bank ASA (NO0010161896, XOSL), price anchor and regulated news",
+              url: "https://live.euronext.com/en/product/equities/NO0010161896-XOSL",
+              note: "Last traded price and regulated news list"
+            },
+            {
+              label: "DNB IR, status of share buy-back programme after week 49 2025",
+              url: "https://www.ir.dnb.no/press-and-reports/press-releases/dnb-bank-asa-status-share-buy-back-programme-after-week-49-2025",
+              note: "Buyback purchase window to 20 February 2026"
+            },
+            {
+              label: "DNB IR, shares quoted ex-dividend, dividend NOK 16.75 per share",
+              url: "https://www.ir.dnb.no/press-and-reports/press-releases/shares-dnb-bank-asa-will-be-quoted-ex-dividend-today-2325303",
+              note: "Dividend mechanics and payment timing"
+            },
+            {
+              label: "DNB, third quarter report 2025 (PDF)",
+              url: "https://mb.cision.com/Public/1975/4254060/a879f5d1b4268bda.pdf",
+              note: "Net interest income stable despite narrowing spreads"
+            }
+          ]
+        },
+
+        sources: [
+          { label: "Euronext Live, DNB (XOSL)", url: "https://live.euronext.com/en/product/equities/NO0010161896-XOSL" },
+          { label: "DNB investor relations, press releases", url: "https://www.ir.dnb.no/press-and-reports/press-releases" }
+        ],
+        tags: ["dnb","oslo","xosl","bank","financials","rates","nim","credit","buyback","dividend","scenario","90d"]
+      },
+
+
+
+{
+        id: "oecs-budget-2026",
+        category: "OECS",
+        title: "OECS fiscal signals, 2026, tightening vs stimulus",
+        summary: "Watch for budget language that signals restraint, debt management, and targeted programs rather than broad spending.",
+        due: "2026-01-31",
+        updated: "2025-12-12",
+        confidence: 63,
+        status: "warn",
+        call: "Moderate likelihood of selective tightening paired with public facing growth language.",
+        band: "Medium",
+        drivers: [
+          "Debt servicing and FX constraints remain central for small island economies.",
+          "Policy messaging tends to emphasize resilience and stability during uncertain global cycles.",
+          "Tourism and import costs feed directly into government posture."
+        ],
+        assumptions: [
+          "No major external shock in Dec–Jan (storms, commodity spikes, geopolitical disruptions).",
+          "Tourism demand stays stable through peak season."
+        ],
+        sources: [
+          { label: "Eastern Caribbean Central Bank", url: "https://www.eccb-centralbank.org/" }
+        ],
+        tags: ["oecs","caribbean","policy","budgets"]
+      },
+      	{
+        id: "btc-vol-window",
+        category: "Crypto",
+        title: "Bitcoin volatility window, elevated risk around macro prints",
+        summary: "Expect sharper intraday moves during clustered macro releases, even if the trend stays sideways.",
+        due: "2025-12-20",
+        updated: "2025-12-12",
+        confidence: 58,
+        status: "warn",
+        call: "Choppy conditions, short bursts, mean reversion likely.",
+        band: "Medium",
+        drivers: [
+          "Macro calendar clustering can amplify risk on leveraged positioning.",
+          "Liquidity pockets create quick wicks, then snapback."
+        ],
+        assumptions: [
+          "No sudden regulatory headline shock in major jurisdictions."
+        ],
+        sources: [
+          { label: "Kalshi", url: "https://kalshi.com/" },
+          { label: "Polymarket", url: "https://polymarket.com/" }
+        ],
+        tags: ["bitcoin","volatility","macro","crypto"]
+      },
+      {
+        id: "sports-football-upset",
+        category: "Sports",
+        title: "Weekend football upset probability, one top seed stumbles",
+        summary: "A fatigue, travel, or injury narrative becomes the story, expect one high profile favorite to underperform.",
+        due: "2025-12-14",
+        updated: "2025-12-12",
+        confidence: 46,
+        status: "warn",
+        call: "One surprise result is plausible, but the market will overreact after.",
+        band: "Wide",
+        drivers: [
+          "Compressed schedules raise variance.",
+          "Late lineup changes matter more than fans admit."
+        ],
+        assumptions: [
+          "Key player availability changes within 24 hours of kickoff."
+        ],
+        sources: [],
+        tags: ["sports","football","upset","variance"]
+      },
+      {
+        id: "tomorrows-paper-middleeast",
+        category: "Tomorrow's Paper",
+        title: "Tomorrow’s Paper, two dominant narratives",
+        summary: "Front pages converge on one geopolitical headline and one economic headline, the rest becomes commentary.",
+        due: "2025-12-13",
+        updated: "2025-12-12",
+        confidence: 61,
+        status: "good",
+        call: "High likelihood of headline convergence across major outlets.",
+        band: "Narrow",
+        drivers: [
+          "Newsroom incentives pull toward the same top story.",
+          "A single data release can crowd out secondary items."
+        ],
+        assumptions: [
+          "No sudden celebrity event or domestic emergency displaces the cycle."
+        ],
+        sources: [],
+        tags: ["media","headlines","news-cycle"]
+      },
+      {
+        id: "prediction-markets-hub",
+        category: "Prediction Markets",
+        title: "Prediction Markets hub, cross-market signal scanner",
+        summary: "A lightweight index that compares major market implied probabilities and flags divergence.",
+        due: "2026-02-01",
+        updated: "2025-12-12",
+        confidence: 70,
+        status: "good",
+        call: "Buildable, useful, and link-friendly, strong MVP add-on.",
+        band: "Narrow",
+        drivers: [
+          "Users crave one page that answers: what do markets imply right now.",
+          "Divergence is attention, attention is distribution."
+        ],
+        assumptions: [
+          "You keep it as an index and link out, avoiding complexity early."
+        ],
+        sources: [
+          { label: "Kalshi", url: "https://kalshi.com/" },
+          { label: "Polymarket", url: "https://polymarket.com/" }
+        ],
+        tags: ["markets","kalshi","polymarket","signals"]
+      },
+      {
+        id: "caribbean-tourism-peak",
+        category: "Caribbean",
+        title: "Caribbean tourism peak, strong occupancy with higher price dispersion",
+        summary: "Expect high occupancy, with bigger gaps between premium properties and mid-tier inventory.",
+        due: "2025-12-31",
+        updated: "2025-12-12",
+        confidence: 65,
+        status: "good",
+        call: "Solid season demand, pricing power becomes uneven across segments.",
+        band: "Medium",
+        drivers: [
+          "Airline capacity plus seasonal travel behavior.",
+          "Premium experiences capture more pricing power."
+        ],
+        assumptions: [
+          "No major disruption to flight schedules in the region."
+        ],
+        sources: [],
+        tags: ["caribbean","tourism","pricing"]
+      }
+    ];
+
+    /* ==========================
+       2) SIMPLE ROUTER AND UI
+       ========================== */
+
+    const elTabs = document.getElementById("tabs");
+    const elGrid = document.getElementById("grid");
+    const elQ = document.getElementById("q");
+    const elSort = document.getElementById("sort");
+    const elClear = document.getElementById("clear");
+    const elStatus = document.getElementById("status");
+    const elListView = document.getElementById("listView");
+    const elDetail = document.getElementById("detailView");
+
+    let state = {
+      category: "All",
+      q: "",
+      sort: "updatedDesc"
+    };
+
+    
+    // Default longform block shown in the detail view when a card does not provide michel_prediction text.
+    const DEFAULT_MICHEL_PREDICTION = `PREDICTION
+Exchange: Oslo Bors
+Ticker: REACH
+Mar 31, 2026 = 6.78 NOK
+Range: 6.71 NOK to 6.85 NOK
+Momentum Vector: +0.24
+Sentiment Weight: +0.15
+Volatility Posture: Moderate
+
+Rationale
+
+Recent Stock Environment & Volatility:
+REACH has shown moderately choppy price action with year-to-date declines and a trading range near the mid-6 NOK region, showing some recovery from lows but below recent multi-month highs. Recent regulated news included bond listing activity and Q3 earnings with mixed operational results, suggesting some investor uncertainty. Overall, the stock’s price behavior and trading range imply a moderate volatility environment in the current market.
+
+Sentiment Signals:
+Sentiment appears slightly positive to neutral. While Q3 results were weaker, there are signs of operational progress (for example, remote tech milestones), strategic vessel developments, and periodic analyst upward target revisions. These contribute a mild positive drift context for the next several months.
+
+Given the moderate volatility and slightly positive sentiment, the price projection models a gradual uptick over the next quarter, from 6.34 toward about 6.78 by March 31, 2026. The momentum vector reflects mild upward pressure, set against industry cyclicality and broader energy and subsea sector developments. The plus or minus 1 percent price band captures plausible dispersion around the central modeled value.`;
+
+
+function fmtDate(iso){
+      if(!iso) return "—";
+      const d = new Date(iso + "T00:00:00");
+      const opts = { year:"numeric", month:"short", day:"2-digit" };
+      return d.toLocaleDateString(undefined, opts);
+    }
+
+    function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
+
+    function dotClass(status){
+      if(status === "good") return "good";
+      if(status === "bad") return "bad";
+      return "warn";
+    }
+
+    function bandLabel(band){
+      if(!band) return "—";
+      return band;
+    }
+
+
+
+    function mostLikelyDriver(p){
+      if(p && typeof p.most_likely_driver === "string" && p.most_likely_driver.trim()){
+        return p.most_likely_driver.trim();
+      }
+      if(p && Array.isArray(p.drivers) && p.drivers.length){
+        return String(p.drivers[0] || "").trim();
+      }
+      return "";
+    }
+
+    function probClass(pct){
+      if(pct >= 50) return "good";
+      if(pct >= 30) return "warn";
+      return "bad";
+    }
+
+    function scenarioBarsHTML(p, mode){
+      const horizon = p?.scenario_outlook?.horizon;
+      const sc = p?.scenario_outlook?.scenarios;
+      if(!Array.isArray(sc) || sc.length === 0) return "";
+      const scSorted = [...sc].sort((a,b) => (b.weight ?? 0) - (a.weight ?? 0));
+      const rows = scSorted.map(s => {
+        const pct = clamp(Math.round((s.weight ?? 0) * 100), 0, 100);
+        const cls = probClass(pct);
+        const id = s.id ? String(s.id) : "";
+        const label = s.label ? String(s.label) : "";
+        const name = (mode === "mini") ? id : (id ? (id + " • " + label) : label);
+        return `
+          <div class="srow ${mode}">
+            <div class="sname">${escapeHtml(name)}</div>
+            <div class="sbar"><div class="sfill ${cls}" style="width:${pct}%"></div></div>
+            <div class="spct">${pct}%</div>
+          </div>
+        `;
+      }).join("");
+      const h = horizon ? `<div class="shorizon">${escapeHtml(horizon)} horizon</div>` : "";
+      const head = (mode === "mini") ? "" : `<div class="shead">Scenario weights</div>${h}`;
+      return `<div class="scenarios ${mode}">${head}${rows}</div>`;
+    }
+
+    
+    function michelPredictionSectionHTML(p){
+      // Show the REACH longform prediction summary ONLY on the REACH detail page.
+      if(!p || p.id !== "reach-oslo-scenario-weighted") return "";
+
+      return `
+            <div style="margin-top:12px;">
+              <h3>Michel Prediction Engine</h3>
+
+              <div style="
+                padding:14px;
+                border:1px solid rgba(255,255,255,.10);
+                border-radius:16px;
+                background: rgba(255,255,255,.03);
+              ">
+
+                <div style="font-family:var(--mono); font-size:12px; color:var(--muted2);">
+                  PREDICTION SUMMARY
+                </div>
+
+                <div style="margin-top:6px; font-family:var(--mono); font-size:14px; color:var(--text);">
+                  Exchange: <strong>Oslo Børs</strong> · Ticker: <strong>REACH</strong>
+                </div>
+
+                <div class="kv" style="margin-top:12px;">
+                  <div class="row"><div class="k">TARGET (31 Mar 2026)</div><div class="v">6.78 NOK</div></div>
+                  <div class="row"><div class="k">MODELED RANGE</div><div class="v">6.71 – 6.85 NOK</div></div>
+                  <div class="row"><div class="k">MOMENTUM VECTOR</div><div class="v">+0.24</div></div>
+                  <div class="row"><div class="k">SENTIMENT WEIGHT</div><div class="v">+0.15</div></div>
+                  <div class="row" style="grid-column:span 2;">
+                    <div class="k">VOLATILITY POSTURE</div>
+                    <div class="v">Moderate</div>
+                  </div>
+                </div>
+
+                <div style="margin-top:14px;">
+                  <div style="font-family:var(--mono); font-size:12px; color:var(--muted2);">
+                    MARKET ENVIRONMENT & VOLATILITY
+                  </div>
+                  <div style="margin-top:6px; font-size:13px; line-height:1.55; color:var(--text);">
+                    REACH has shown moderately choppy price action with year-to-date declines and a trading range near the mid-6 NOK region, showing some recovery from lows but below recent multi-month highs. Recent regulated news included bond listing activity and Q3 earnings with mixed operational results, suggesting some investor uncertainty. Overall, the stock’s price behavior and trading range imply a moderate volatility environment in the current market.
+                  </div>
+                </div>
+
+                <div style="margin-top:14px;">
+                  <div style="font-family:var(--mono); font-size:12px; color:var(--muted2);">
+                    SENTIMENT SIGNALS
+                  </div>
+                  <div style="margin-top:6px; font-size:13px; line-height:1.55; color:var(--text);">
+                    Sentiment appears slightly positive to neutral. While Q3 results were weaker, there are signs of operational progress (for example, remote tech milestones), strategic vessel developments, and periodic analyst upward target revisions. These contribute a mild positive drift context for the next several months.
+                  </div>
+                </div>
+
+                <div style="margin-top:14px;">
+                  <div style="font-family:var(--mono); font-size:12px; color:var(--muted2);">
+                    MODEL OUTPUT
+                  </div>
+                  <div style="margin-top:6px; font-size:13px; line-height:1.55; color:var(--text);">
+                    Given the moderate volatility and slightly positive sentiment, the price projection models a gradual uptick over the next quarter, from 6.34 toward about 6.78 by March 31, 2026. The momentum vector reflects mild upward pressure, set against industry cyclicality and broader energy and subsea sector developments. The plus or minus 1 percent price band captures plausible dispersion around the central modeled value.
+                  </div>
+                </div>
+
+                <div style="
+                  margin-top:14px;
+                  padding:10px 12px;
+                  border:1px solid rgba(255,255,255,.08);
+                  border-radius:12px;
+                  background: rgba(255,255,255,.04);
+                  font-family:var(--mono);
+                  font-size:12px;
+                  color:var(--muted);
+                ">
+                  Modeled outcome reflects mild upward pressure balanced against sector cyclicality and subsea industry execution risk.
+                </div>
+
+              </div>
+            </div>
+      `;
+    }
+
+
+    function mpeAnalysisSectionHTML(p){
+      const a = p && p.mpe_analysis ? p.mpe_analysis : null;
+      if(!a) return "";
+
+      const chips = (a.driver_chips || []).map(t => `<span class="mpe-chip2">${escapeHtml(t)}</span>`).join("");
+
+      const anchors = (a.verified_anchors || []).map((x,i) => {
+        const src = x && x.url ? ` <a href="${escapeAttr(x.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:none;">${escapeHtml(x.source || "Source")}</a>` : (x && x.source ? ` <span style="color:var(--muted2); font-family:var(--mono); font-size:11px;">${escapeHtml(x.source)}</span>` : "");
+        return `
+          <li class="li">
+            <div class="b">${i+1}</div>
+            <div>
+              <div style="font-weight:700; margin-bottom:4px;">${escapeHtml(x.title || "")}</div>
+              <div style="color: var(--muted); line-height:1.5;">${escapeHtml(x.detail || "")}${src}</div>
+            </div>
+          </li>
+        `;
+      }).join("");
+
+      const rows = (a.scenarios || []).map(s => {
+        const conds = (s.conditions || []).map(c => `<li>${escapeHtml(c)}</li>`).join("");
+        return `
+          <tr>
+            <td><strong>${escapeHtml(s.name || "")}</strong><div style="margin-top:6px;" class="mpe-subtle">${escapeHtml(s.id ? ("Path " + s.id) : "")}</div></td>
+            <td class="mpe-weight">${escapeHtml(String(s.weight_pct ?? "") + "%")}</td>
+            <td><ul class="mpe-miniul">${conds}</ul></td>
+            <td>${escapeHtml(s.expected_behavior || "")}</td>
+          </tr>
+        `;
+      }).join("");
+
+      const tUp = (a.triggers && Array.isArray(a.triggers.upside) ? a.triggers.upside : []).map(x => `<li>${escapeHtml(x)}</li>`).join("");
+      const tDown = (a.triggers && Array.isArray(a.triggers.downside) ? a.triggers.downside : []).map(x => `<li>${escapeHtml(x)}</li>`).join("");
+
+      const cites = (a.citations || []).map(c => {
+        const link = c && c.url ? `<a href="${escapeAttr(c.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(c.url)}</a>` : "";
+        const note = c && c.note ? ` <span style="color:var(--muted2);">(${escapeHtml(c.note)})</span>` : "";
+        return `<li><span style="color:var(--text);">${escapeHtml(c.label || "")}</span>${note}${link ? `<div style="margin-top:4px;">${link}</div>` : ""}</li>`;
+      }).join("");
+
+      const asof = a.as_of ? fmtDate(a.as_of) : "—";
+      const hend = a.horizon_end ? fmtDate(a.horizon_end) : "—";
+      const anchorLabel = a.price_anchor_label ? a.price_anchor_label : "PRICE ANCHOR";
+      const anchorVal = (a.price_anchor != null && a.currency) ? `${a.price_anchor} ${a.currency}` : (a.price_anchor != null ? String(a.price_anchor) : "—");
+
+      return `
+        <div class="mpe-block">
+          <div class="mpe-subtle">Michel Prediction Engine, market analysis</div>
+
+          <div style="margin-top:6px; font-family:var(--mono); font-size:14px; color:var(--text);">
+            Exchange: <strong>${escapeHtml(a.exchange || "—")}</strong> · Ticker: <strong>${escapeHtml(a.ticker || "—")}</strong> · Horizon: <strong>${escapeHtml(String(a.horizon_days || "—"))} days</strong>
+          </div>
+
+          <div class="kv" style="margin-top:12px;">
+            <div class="row"><div class="k">${escapeHtml(anchorLabel)}</div><div class="v">${escapeHtml(anchorVal)}</div></div>
+            <div class="row"><div class="k">AS OF</div><div class="v">${escapeHtml(asof)}</div></div>
+            <div class="row"><div class="k">HORIZON END</div><div class="v">${escapeHtml(hend)}</div></div>
+            <div class="row"><div class="k">VOLATILITY POSTURE</div><div class="v">${escapeHtml(a.volatility_posture || "—")}</div></div>
+          </div>
+
+          ${(chips ? `
+            <div style="margin-top:14px;">
+              <div class="mpe-subtle">Driver chips</div>
+              <div class="mpe-chips">${chips}</div>
+            </div>
+          ` : "")}
+
+          ${(anchors ? `
+            <div style="margin-top:14px;">
+              <div class="mpe-subtle">Verified anchors</div>
+              <ul class="list" style="margin-top:10px;">
+                ${anchors}
+              </ul>
+            </div>
+          ` : "")}
+
+          ${(rows ? `
+            <div style="margin-top:14px;">
+              <div class="mpe-subtle">Scenario table</div>
+              <table class="mpe-table" aria-label="Scenario table">
+                <thead>
+                  <tr>
+                    <th>Scenario</th>
+                    <th>Weight</th>
+                    <th>Conditions</th>
+                    <th>Expected behavior</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rows}
+                </tbody>
+              </table>
+            </div>
+          ` : "")}
+
+          ${(tUp || tDown ? `
+            <div style="margin-top:14px;">
+              <div class="mpe-subtle">Triggers that update weights</div>
+              <div class="mpe-triggergrid">
+                <div class="mpe-triggerpanel">
+                  <h4>Increase Upside weight if</h4>
+                  <ul>${tUp || "<li>—</li>"}</ul>
+                </div>
+                <div class="mpe-triggerpanel mpe-triggerpanel--risk">
+                  <h4>Increase Downside weight if</h4>
+                  <ul>${tDown || "<li>—</li>"}</ul>
+                </div>
+              </div>
+            </div>
+          ` : "")}
+
+          ${(cites ? `
+            <div style="margin-top:14px;">
+              <div class="mpe-subtle">Citations and source log</div>
+              <ol class="mpe-cite">
+                ${cites}
+              </ol>
+            </div>
+          ` : "")}
+
+        </div>
+      `;
+    }
+
+function buildTabs(){
+      elTabs.innerHTML = "";
+      CATEGORIES.forEach(cat => {
+        const b = document.createElement("button");
+        b.className = "tab" + (cat === state.category ? " active" : "");
+        b.textContent = cat;
+        b.addEventListener("click", () => {
+          state.category = cat;
+          setHashList();
+          render();
+        });
+        elTabs.appendChild(b);
+      });
+    }
+
+    function setActiveTab(){
+      [...elTabs.children].forEach(btn => {
+        btn.classList.toggle("active", btn.textContent === state.category);
+      });
+    }
+
+    function normalize(s){ return (s || "").toLowerCase().trim(); }
+
+    function filterData(){
+      const q = normalize(state.q);
+      return PREDICTIONS
+        .filter(p => state.category === "All" ? true : p.category === state.category)
+        .filter(p => {
+          if(!q) return true;
+          const hay = [
+            p.title, p.summary, p.category, p.call,
+            ...(p.tags || [])
+          ].join(" ").toLowerCase();
+          return hay.includes(q);
+        });
+    }
+
+    function sortData(items){
+      const arr = [...items];
+      if(state.sort === "updatedDesc"){
+        arr.sort((a,b) => (b.updated || "").localeCompare(a.updated || ""));
+      } else if(state.sort === "dueAsc"){
+        arr.sort((a,b) => (a.due || "9999-12-31").localeCompare(b.due || "9999-12-31"));
+      } else if(state.sort === "confidenceDesc"){
+        arr.sort((a,b) => (b.confidence || 0) - (a.confidence || 0));
+      }
+      return arr;
+    }
+
+    function cardHTML(p){
+      const conf = clamp(p.confidence ?? 0, 0, 100);
+      const due = fmtDate(p.due);
+      const upd = fmtDate(p.updated);
+      return `
+        <article class="card" role="button" tabindex="0" aria-label="Open prediction details: ${escapeHtml(p.title)}" data-id="${escapeAttr(p.id)}">
+          <div class="card-inner">
+            <div class="kicker-row">
+              <div class="chip">
+                <span class="dot ${dotClass(p.status)}"></span>
+                <span>${escapeHtml(p.category)}</span>
+              </div>
+              <div class="when">DUE ${escapeHtml(due)}</div>
+            </div>
+
+            <div class="h">${escapeHtml(p.title)}</div>
+            <div class="desc">${escapeHtml(p.summary)}</div>
+
+            ${scenarioBarsHTML(p,"mini")}
+
+            ${mostLikelyDriver(p) ? `<div style="margin-top:8px; color: var(--muted2); font-family: var(--mono); font-size:11px; line-height:1.35;">MOST LIKELY DRIVER: ${escapeHtml(mostLikelyDriver(p))}</div>` : ""}
+
+            <div class="meter">
+              <div class="bar" aria-hidden="true"><div class="fill" style="width:${conf}%"></div></div>
+              <div class="meta">
+                <div>CONF ${conf}% • BAND ${escapeHtml(bandLabel(p.band))}</div>
+                <div>UPD ${escapeHtml(upd)}</div>
+              </div>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderGrid(items){
+      if(items.length === 0){
+        elGrid.innerHTML = `
+          <div class="panel" style="grid-column: span 12;">
+            <h3>No matches</h3>
+            <div style="color: var(--muted); font-size:13px; line-height:1.5;">
+              Try a different category, or clear the search.
+            </div>
+          </div>
+        `;
+        return;
+      }
+      elGrid.innerHTML = items.map(cardHTML).join("");
+      // click handlers
+      document.querySelectorAll(".card").forEach(card => {
+        card.addEventListener("click", () => openDetail(card.dataset.id));
+        card.addEventListener("keydown", (e) => {
+          if(e.key === "Enter" || e.key === " "){
+            e.preventDefault();
+            openDetail(card.dataset.id);
+          }
+        });
+      });
+    }
+
+    function renderStatus(items){
+      const total = PREDICTIONS.length;
+      const shown = items.length;
+      elStatus.textContent = `${shown} shown • ${total} total • category: ${state.category}`;
+    }
+
+    function render(){
+      buildTabs();
+      setActiveTab();
+
+      elQ.value = state.q;
+      elSort.value = state.sort;
+
+      const filtered = filterData();
+      const sorted = sortData(filtered);
+
+      renderGrid(sorted);
+      renderStatus(sorted);
+
+      elListView.style.display = "";
+      elDetail.classList.remove("active");
+      elDetail.innerHTML = "";
+    }
+
+    function openDetail(id){
+      const p = PREDICTIONS.find(x => x.id === id);
+      if(!p) return;
+
+      // update URL hash to shareable link
+      const params = new URLSearchParams();
+      params.set("p", id);
+      location.hash = params.toString();
+
+      renderDetail(p);
+    }
+
+    function backToList(){
+      setHashList();
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function setHashList(){
+      const params = new URLSearchParams();
+      if(state.category && state.category !== "All") params.set("cat", state.category);
+      if(state.q) params.set("q", state.q);
+      if(state.sort && state.sort !== "updatedDesc") params.set("sort", state.sort);
+      location.hash = params.toString();
+    }
+
+    function renderDetail(p){
+      elListView.style.display = "none";
+      elDetail.classList.add("active");
+
+      const conf = clamp(p.confidence ?? 0, 0, 100);
+      const due = fmtDate(p.due);
+      const upd = fmtDate(p.updated);
+
+      const drivers = (p.drivers || []).map((t,i) => `
+        <li class="li"><div class="b">${i+1}</div><div>${escapeHtml(t)}</div></li>
+      `).join("");
+
+      const assumptions = (p.assumptions || []).map((t,i) => `
+        <li class="li"><div class="b">${i+1}</div><div>${escapeHtml(t)}</div></li>
+      `).join("");
+
+      const sources = (p.sources || []).map(s => `
+        <div class="row" style="grid-column: span 2;">
+          <div class="k">SOURCE</div>
+          <div class="v"><a href="${escapeAttr(s.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:none;">${escapeHtml(s.label)}</a></div>
+        </div>
+      `).join("");
+
+      const tags = (p.tags || []).map(t => `<span class="badge">#${escapeHtml(t)}</span>`).join(" ");
+
+      elDetail.innerHTML = `
+        <div class="view-head">
+          <div>
+            <div class="chip" style="display:inline-flex;">
+              <span class="dot ${dotClass(p.status)}"></span>
+              <span>${escapeHtml(p.category)}</span>
+            </div>
+
+            <h2 class="view-title">${escapeHtml(p.title)}</h2>
+            <div class="view-sub">${escapeHtml(p.summary)}</div>
+
+            <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+              ${tags || ""}
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:10px; align-items:flex-end;">
+            <button class="btn" id="backBtn">Back</button>
+            <button class="btn secondary" id="copyBtn">Copy Link</button>
+          </div>
+        </div>
+
+        <div class="view-body">
+          <div class="panel">
+            <h3>Scenario weights</h3>
+            ${scenarioBarsHTML(p,"full")}
+
+            ${mostLikelyDriver(p) ? `<div style="margin-top:10px; padding:10px 10px; border:1px solid rgba(255,255,255,.08); border-radius:14px; background: rgba(255,255,255,.03); font-family: var(--mono); font-size:11px; color: var(--muted); line-height:1.45;"><span style="color: var(--muted2);">MOST LIKELY DRIVER</span><br>${escapeHtml(mostLikelyDriver(p))}</div>` : ""}
+
+            <div style="margin-top:14px;">
+              <h3>Scenario narrative</h3>
+              <div style="font-size:14px; line-height:1.55; color:var(--text);">
+                ${escapeHtml(p.call || "—")}
+              </div>
+            </div>
+
+
+            <div style="margin-top:14px;">
+              <h3>Drivers</h3>
+              <ul class="list">
+                ${drivers || `<li class="li"><div class="b">!</div><div>No drivers added yet.</div></li>`}
+              </ul>
+            </div>
+
+            <div style="margin-top:14px;">
+              <h3>Assumptions</h3>
+              <ul class="list">
+                ${assumptions || `<li class="li"><div class="b">!</div><div>No assumptions added yet.</div></li>`}
+              </ul>
+            </div>
+
+            ${mpeAnalysisSectionHTML(p)}
+          </div>
+
+          <div class="panel">
+            <h3>Signal panel</h3>
+            <div class="kv">
+              <div class="row">
+                <div class="k">DUE</div>
+                <div class="v">${escapeHtml(due)}</div>
+              </div>
+              <div class="row">
+                <div class="k">UPDATED</div>
+                <div class="v">${escapeHtml(upd)}</div>
+              </div>
+              <div class="row">
+                <div class="k">CONFIDENCE</div>
+                <div class="v">${conf}%</div>
+              </div>
+              <div class="row">
+                <div class="k">BAND</div>
+                <div class="v">${escapeHtml(bandLabel(p.band))}</div>
+              </div>
+              <div class="row" style="grid-column: span 2;">
+                <div class="k">CATEGORY</div>
+                <div class="v">${escapeHtml(p.category)}</div>
+              </div>
+            </div>
+
+            <div style="margin-top:12px;">
+              <h3>Confidence meter</h3>
+              <div class="bar"><div class="fill" style="width:${conf}%"></div></div>
+              <div style="margin-top:8px; font-family:var(--mono); font-size:11px; color:var(--muted2);">
+                Higher confidence means: fewer fragile assumptions, more consistent signal inputs, clearer driver alignment.
+              </div>
+            </div>
+
+            
+
+            ${michelPredictionSectionHTML(p)}
+
+      `;
+
+      document.getElementById("backBtn").addEventListener("click", backToList);
+      document.getElementById("copyBtn").addEventListener("click", async () => {
+        try{
+          await navigator.clipboard.writeText(location.href);
+          document.getElementById("copyBtn").textContent = "Copied";
+          setTimeout(() => (document.getElementById("copyBtn").textContent = "Copy Link"), 900);
+        }catch(e){
+          alert("Copy failed, you can copy from the address bar.");
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function escapeHtml(s){
+      return String(s ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+    function escapeAttr(s){
+      return escapeHtml(s).replaceAll("`","&#096;");
+    }
+
+    /* ==========================
+       3) HASH STATE: shareable URLs
+       ========================== */
+
+    function readHash(){
+      const raw = (location.hash || "").replace(/^#/, "");
+      const params = new URLSearchParams(raw);
+
+      const p = params.get("p");
+      const cat = params.get("cat");
+      const q = params.get("q");
+      const sort = params.get("sort");
+
+      if(cat && CATEGORIES.includes(cat)) state.category = cat;
+      else state.category = "All";
+
+      state.q = q ? q : "";
+      state.sort = sort ? sort : "updatedDesc";
+
+      if(p){
+        const pred = PREDICTIONS.find(x => x.id === p);
+        if(pred){
+          // Keep tabs aligned with the item’s category for context
+          state.category = pred.category;
+          buildTabs();
+          setActiveTab();
+          renderDetail(pred);
+          return;
+        }
+      }
+      render();
+    }
+
+    /* ==========================
+       4) EVENTS
+       ========================== */
+
+    elQ.addEventListener("input", () => {
+      state.q = elQ.value;
+      setHashList();
+      render();
+    });
+
+    elSort.addEventListener("change", () => {
+      state.sort = elSort.value;
+      setHashList();
+      render();
+    });
+
+    elClear.addEventListener("click", () => {
+      state.category = "All";
+      state.q = "";
+      state.sort = "updatedDesc";
+      location.hash = "";
+      render();
+    });
+
+    window.addEventListener("hashchange", readHash);
+
+    // Boot
+    readHash();
+  </script>
+</body>
+</html>
