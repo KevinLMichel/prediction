@@ -2126,6 +2126,27 @@
       sort: "updatedDesc",
       caribArea: "All"
     };
+
+    /* ==========================
+       UX ENHANCEMENTS
+       - Fixed header sizing (CSS var --header-h)
+       ========================== */
+
+    const elHeader = document.querySelector("header");
+    function setHeaderHeightVar(){
+      if(!elHeader) return;
+      const h = elHeader.getBoundingClientRect().height;
+      document.documentElement.style.setProperty("--header-h", `${Math.ceil(h)}px`);
+    }
+    function scheduleHeaderHeightMeasure(){
+      if(typeof requestAnimationFrame === "function"){
+        requestAnimationFrame(() => setHeaderHeightVar());
+      } else {
+        setTimeout(() => setHeaderHeightVar(), 0);
+      }
+    }
+    window.addEventListener("resize", scheduleHeaderHeightMeasure);
+
     /* ==========================
        UX ENHANCEMENTS
        - Remember category/country selection (localStorage)
@@ -2922,7 +2943,9 @@ function buildTabs(){
         });
         elTabs.appendChild(b);
       });
-    }
+    
+      scheduleHeaderHeightMeasure();
+}
 
     function setActiveTab(){
       [...elTabs.children].forEach(btn => {
@@ -2976,7 +2999,9 @@ function buildTabs(){
         });
         elSubtabs.appendChild(b);
       });
-    }
+    
+      scheduleHeaderHeightMeasure();
+}
 
     function normalize(s){ return (s || "").toLowerCase().trim(); }
 
@@ -3150,7 +3175,9 @@ if(state.category === "Tomorrow's Paper"){
       elDetail.innerHTML = "";
       elListView.classList.add("fade-in");
       setTimeout(() => elListView.classList.remove("fade-in"), 220);
-    }
+    
+      scheduleHeaderHeightMeasure();
+}
 
     function openDetail(id){
       const p = PREDICTIONS.find(x => x.id === id);
@@ -3460,3 +3487,4 @@ if(state.category === "Tomorrow's Paper"){
 
     // Boot
     readHash();
+    scheduleHeaderHeightMeasure();
