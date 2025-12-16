@@ -2578,12 +2578,17 @@ function mostLikelyDriver(p){
           ` : "")}
 
           ${(cites ? `
-            <div style="margin-top:14px;">
-              <div class="mpe-subtle">Citations and source log</div>
-              <ol class="mpe-cite">
-                ${cites}
-              </ol>
-            </div>
+            <details class="collapsible" style="margin-top:14px;">
+              <summary>
+                <span>Citations</span>
+                <span class="cmeta">Source log</span>
+              </summary>
+              <div class="cbody">
+                <ol class="mpe-cite" style="margin-top:0;">
+                  ${cites}
+                </ol>
+              </div>
+            </details>
           ` : "")}
 
         </div>
@@ -2617,32 +2622,32 @@ function mostLikelyDriver(p){
       const lf = p && p.longform ? p.longform : null;
       if(!lf || !lf.placeholder_id) return "";
       const pid = lf.placeholder_id;
+      const did = pid + "__details";
 
-      // If longform HTML is provided, render it here (trusted content, pasted by site owner).
-      if(lf && typeof lf.html === "string" && lf.html.trim()){
-        return `
-          <div class="mpe-block" id="${escapeAttr(pid)}">
-            <div class="mpe-subtle">Longform explainer</div>
-            <div class="longform-article">
-              ${lf.html}
-            </div>
-          </div>
-        `;
-      }
-
-      // Default placeholder
-      return `
-        <div class="mpe-block" id="${escapeAttr(pid)}">
-          <div class="mpe-subtle">Longform explainer</div>
-          <div style="margin-top:8px; color: var(--muted); font-size:13px; line-height:1.6;">
+      const body = (lf && typeof lf.html === "string" && lf.html.trim())
+        ? `<div class="longform-article">${lf.html}</div>`
+        : `
+          <div style="color: var(--muted); font-size:13px; line-height:1.6;">
             <strong>PLACEHOLDER:</strong> paste the longform article content here. Keep scenario weights and the base-case sentence aligned with the card and detail page.
           </div>
           <div style="margin-top:10px; color: var(--muted2); font-family: var(--mono); font-size:11px; line-height:1.45;">
-            Tip: search the file for <span style="color:var(--text);">longform-jam-election-trigger-12m</span> to find this block quickly.
+            Tip: search the file for <span style="color:var(--text);">${escapeHtml(pid)}</span> to find this block quickly.
           </div>
-        </div>
+        `;
+
+      return `
+        <details class="collapsible" id="${escapeAttr(did)}">
+          <summary>
+            <span>Longform explainer</span>
+            <span class="cmeta">Further reading</span>
+          </summary>
+          <div class="cbody" id="${escapeAttr(pid)}">
+            ${body}
+          </div>
+        </details>
       `;
     }
+
 
 /* ==========================
    TOMORROW'S PAPER HELPERS
@@ -3208,12 +3213,26 @@ if(state.category === "Tomorrow's Paper"){
         <li class="li"><div class="b">${i+1}</div><div>${escapeHtml(t)}</div></li>
       `).join("");
 
-      const sources = (p.sources || []).map(s => `
-        <div class="row" style="grid-column: span 2;">
-          <div class="k">SOURCE</div>
-          <div class="v"><a href="${escapeAttr(s.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:none;">${escapeHtml(s.label)}</a></div>
-        </div>
+      const sourcesRows = (p.sources || []).map(s => `
+        <li style="margin:8px 0; color: var(--muted); font-size:12px; line-height:1.45;">
+          <a href="${escapeAttr(s.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:none;">${escapeHtml(s.label)}</a>
+          <div style="margin-top:3px; color: var(--muted2); font-family: var(--mono); font-size:11px;">${escapeHtml(s.url)}</div>
+        </li>
       `).join("");
+
+      const sourcesBlock = sourcesRows ? `
+        <details class="collapsible" style="margin-top:12px;">
+          <summary>
+            <span>Sources</span>
+            <span class="cmeta">${escapeHtml(String((p.sources || []).length))}</span>
+          </summary>
+          <div class="cbody">
+            <ul style="margin:0; padding-left:18px;">
+              ${sourcesRows}
+            </ul>
+          </div>
+        </details>
+      ` : "";
 
       const tags = (p.tags || []).map(t => `<span class="badge">#${escapeHtml(t)}</span>`).join(" ");
 
@@ -3319,6 +3338,8 @@ if(state.category === "Tomorrow's Paper"){
 
             
 
+            ${sourcesBlock}
+
             ${michelPredictionSectionHTML(p)}
 
       `;
@@ -3339,9 +3360,16 @@ if(state.category === "Tomorrow's Paper"){
       const lfBtn = document.getElementById("longformBtn");
       if(lfBtn && p.longform && p.longform.placeholder_id){
         lfBtn.addEventListener("click", () => {
-          const target = document.getElementById(p.longform.placeholder_id);
-          if(target){
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
+          const did = p.longform.placeholder_id + "__details";
+          const details = document.getElementById(did);
+          if(details){
+            details.open = true;
+            details.scrollIntoView({ behavior: "smooth", block: "start" });
+            return;
+          }
+          const fallback = document.getElementById(p.longform.placeholder_id);
+          if(fallback){
+            fallback.scrollIntoView({ behavior: "smooth", block: "start" });
           }
         });
       }
