@@ -20,6 +20,9 @@
       --radius: 18px;
       --radius2: 26px;
 
+      /* layout */
+      --header-h: 160px;
+
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
       --serif: ui-serif, Georgia, "Times New Roman", Times, serif;
@@ -58,21 +61,33 @@
       padding:20px 0 64px;
     }
 
+    main.wrap.content{
+      padding: calc(var(--header-h, 160px) + 14px) 0 64px;
+    }
+
+
     header{
-      position:sticky;
+      position:fixed;
       top:0;
-      z-index:50;
+      left:0;
+      right:0;
+      z-index:200;
       backdrop-filter: blur(14px);
       background: linear-gradient(180deg, rgba(5,6,10,.78), rgba(5,6,10,.35));
       border-bottom:1px solid rgba(26,42,85,.55);
     }
+
+    header .wrap{
+      padding: 12px 0 10px;
+    }
+
 
     .topbar{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:14px;
-      padding:14px 0;
+      padding:10px 0;
     }
 
     .brand{
@@ -173,14 +188,14 @@
     }
 
     .content{
-      padding-top: 18px;
+      padding-top: 0;
     }
 
     .tabs{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      margin: 10px 0 18px;
+      margin: 8px 0 10px;
     }
     .tab{
       font-family:var(--mono);
@@ -209,7 +224,7 @@
       display:none;
       gap:10px;
       flex-wrap:wrap;
-      margin: -6px 0 14px;
+      margin: -4px 0 10px;
     }
     .subtab{
       font-family:var(--mono);
@@ -1105,3 +1120,9 @@ details.collapsible .cbody{
       .topbar{ flex-direction:column; align-items:stretch; }
       .brand{ min-width: 0; }
     }
+
+/* Fixed header: prevent anchor targets from hiding under the header */
+#detailView [id]{
+  scroll-margin-top: calc(var(--header-h, 160px) + 14px);
+}
+#listView{ scroll-margin-top: calc(var(--header-h, 160px) + 14px); }
