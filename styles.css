@@ -10,6 +10,10 @@
       --muted2:#7f8bb4;
       --accent:#6ee7ff;
       --accent2:#a78bfa;
+
+      /* theme defaults */
+      --theme-a-rgb: 110,231,255;
+      --theme-b-rgb: 167,139,250;
       --good:#34d399;
       --warn:#fbbf24;
       --bad:#fb7185;
@@ -19,9 +23,6 @@
 
       --radius: 18px;
       --radius2: 26px;
-
-      /* layout */
-      --header-h: 160px;
 
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
@@ -61,33 +62,21 @@
       padding:20px 0 64px;
     }
 
-    main.wrap.content{
-      padding: calc(var(--header-h, 160px) + 14px) 0 64px;
-    }
-
-
     header{
-      position:fixed;
+      position:sticky;
       top:0;
-      left:0;
-      right:0;
-      z-index:200;
+      z-index:50;
       backdrop-filter: blur(14px);
       background: linear-gradient(180deg, rgba(5,6,10,.78), rgba(5,6,10,.35));
       border-bottom:1px solid rgba(26,42,85,.55);
     }
-
-    header .wrap{
-      padding: 12px 0 10px;
-    }
-
 
     .topbar{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:14px;
-      padding:10px 0;
+      padding:14px 0;
     }
 
     .brand{
@@ -188,14 +177,14 @@
     }
 
     .content{
-      padding-top: 0;
+      padding-top: 18px;
     }
 
     .tabs{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      margin: 8px 0 10px;
+      margin: 10px 0 18px;
     }
     .tab{
       font-family:var(--mono);
@@ -224,7 +213,7 @@
       display:none;
       gap:10px;
       flex-wrap:wrap;
-      margin: -4px 0 10px;
+      margin: -6px 0 14px;
     }
     .subtab{
       font-family:var(--mono);
@@ -519,7 +508,69 @@
       white-space:nowrap;
     }
 
-    /* Detail view */
+    
+
+    /* Prediction Markets: busier card blocks */
+    .pm-meta{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top: 2px;
+    }
+
+    .pm-odds{
+      margin-top: 8px;
+      padding: 10px 10px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      background: rgba(0,0,0,.14);
+    }
+    .pm-odds-head{
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted2);
+      letter-spacing: .35px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .pm-odds-list{
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+    }
+    .pm-odds-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .pm-odds-name{
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      max-width: 72%;
+    }
+    .pm-odds-pct{
+      color: var(--text);
+      white-space:nowrap;
+    }
+
+    /* Short-horizon markets: visually lighter */
+    .card[data-short="1"]{
+      min-height: 182px;
+      background:
+        radial-gradient(140px 90px at 18% 22%, rgba(var(--theme-a-rgb), .10), transparent 65%),
+        linear-gradient(180deg, rgba(11,18,38,.62), rgba(10,16,34,.38));
+      border-color: rgba(255,255,255,.08);
+    }
+    .card[data-short="1"]::before{ opacity:.18; }
+    .card[data-short="1"] .pm-odds{ background: rgba(255,255,255,.02); }
+
+
+/* Detail view */
     .view{
       display:none;
       margin-top: 14px;
@@ -1120,9 +1171,3 @@ details.collapsible .cbody{
       .topbar{ flex-direction:column; align-items:stretch; }
       .brand{ min-width: 0; }
     }
-
-/* Fixed header: prevent anchor targets from hiding under the header */
-#detailView [id]{
-  scroll-margin-top: calc(var(--header-h, 160px) + 14px);
-}
-#listView{ scroll-margin-top: calc(var(--header-h, 160px) + 14px); }
