@@ -1609,842 +1609,6 @@
         tags: ["sports","football","upset","variance"]
       },
       {
-        id: "pm-ucl-winner-2026",
-        category: "Prediction Markets",
-        categories: ["Prediction Markets","Sports"],
-        title: "UEFA Champions League Winner (2025–26), market + scenario view",
-        summary: "Bayern lead the market, but this tournament is an injury-and-draw machine. Most likely path is favorites holding form and depth through the knockouts.",
-        due: "2026-05-31",
-        updated: "2025-12-16",
-        confidence: 58,
-        status: "warn",
-        call: "Base case (55%): favorites hold form and depth matters across two-legged ties. Bracket-opens case (30%): one superclub shock-exits, and the title race re-prices sharply. Underdog run (15%): keeper and finishing variance plus draw luck creates a non-elite finalist. Market baseline (Polymarket): Bayern 19%, Arsenal 16%, Real 11%, PSG 11%, City 10%, Barca 10%, Liverpool 9%.",
-        band: "Medium",
-        most_likely_driver: "Squad availability and draw path, especially injuries to the spine (keeper, CB organizer, primary scorer), plus late-season fixture congestion.",
-        drivers: [
-          "Market baseline currently favors Bayern, Arsenal, Real, PSG, City, Barca, Liverpool, implying a tight elite cluster rather than a single runaway favorite.",
-          "Knockout structure amplifies single-match variance, with red cards, penalties, and keeper spikes acting as decisive swing factors.",
-          "Depth and rotation quality matter more after March, when domestic and European fixtures compress."
-        ],
-        assumptions: [
-          "No prolonged multi-week injury absence to multiple starters for the market leader.",
-          "No extreme draw imbalance that forces top favorites into an unusually hard bracket on one side.",
-          "League-phase performance remains broadly informative of knockout quality, not completely noisy."
-        ],
-        market_meta: { platform: "Polymarket", volume: "$84m", expiry_note: "Tournament" },
-        quick_odds: [
-          { label: "Bayern", pct: 19 },
-          { label: "Arsenal", pct: 16 },
-          { label: "Real Madrid", pct: 11 }
-        ],
-        market_odds: [
-          { label: "Bayern Munich", pct: 19 },
-          { label: "Arsenal", pct: 16 },
-          { label: "Real Madrid", pct: 11 },
-          { label: "PSG", pct: 11 },
-          { label: "Man City", pct: 10 },
-          { label: "Barcelona", pct: 10 },
-          { label: "Liverpool", pct: 9 },
-          { label: "Chelsea", pct: 4 },
-          { label: "Inter", pct: 4 },
-          { label: "Field/Other", pct: 6 }
-        ],
-        scenario_outlook: {
-          horizon: "Knockout season",
-          scenarios: [
-            { id: "A", label: "BASE. Favorites hold, depth matters", weight: 0.55 },
-            { id: "B", label: "OPEN. Superclub shock, bracket opens", weight: 0.30 },
-            { id: "C", label: "CHAOS. Underdog run via variance", weight: 0.15 }
-          ]
-        },
-        mpe_analysis: {
-          ticker: "UCL",
-          exchange: "UEFA",
-          horizon_days: 170,
-          horizon_end: "2026-05-31",
-          as_of: "2025-12-16",
-          price_anchor_label: "MARKET BASELINE (Polymarket)",
-          price_anchor: "Bayern 19%, Arsenal 16%",
-          currency: "",
-          volatility_posture: "High, knockout variance",
-          driver_chips: [
-            "Squad health and depth",
-            "Draw path and bracket shape",
-            "Defensive stability and set-piece resilience",
-            "Fixture congestion into spring",
-            "Keeper and finishing variance"
-          ],
-          verified_anchors: [
-            {
-              title: "Polymarket baseline distribution",
-              detail: "Current market-implied win chances for the 2025–26 Champions League.",
-              source: "Polymarket",
-              url: "https://polymarket.com/event/uefa-champions-league-winner"
-            },
-            {
-              title: "Official competition source",
-              detail: "Official UEFA Champions League competition hub and results.",
-              source: "UEFA",
-              url: "https://www.uefa.com/uefachampionsleague/"
-            }
-          ],
-          scenarios: [
-            {
-              id: "A",
-              name: "Base, favorites hold and depth matters",
-              weight_pct: 55,
-              conditions: [
-                "Top teams keep their spine healthy through March to May",
-                "Rotation quality prevents late-season fatigue collapse",
-                "Two-legged ties reduce single-match chaos"
-              ],
-              expected_behavior: "Elite cluster remains dominant, the final is likely two of the market top seven."
-            },
-            {
-              id: "B",
-              name: "Bracket opens after a superclub shock-exit",
-              weight_pct: 30,
-              conditions: [
-                "A top contender suffers an injury cascade or red-card event in a key tie",
-                "The draw forces a concentrated heavyweight collision early",
-                "An underpriced team capitalizes on a softened bracket"
-              ],
-              expected_behavior: "Title odds re-price, mid-tier contenders become live, and the market compresses."
-            },
-            {
-              id: "C",
-              name: "Underdog run driven by variance",
-              weight_pct: 15,
-              conditions: [
-                "Keeper spike and finishing streak align for 3 to 5 matches",
-                "Draw luck avoids multiple heavyweights",
-                "Set-pieces and counters deliver high leverage goals"
-              ],
-              expected_behavior: "A non-elite semifinalist emerges and the final becomes higher variance than expected."
-            }
-          ],
-          triggers: {
-            upside: [
-              "Market leader keeps a stable XI through March and avoids key injuries.",
-              "Favorable draw avoids early top-3 collisions on the same side of the bracket.",
-              "Underlying defensive metrics remain stable over 5+ matches."
-            ],
-            downside: [
-              "Spine injury (keeper, CB organizer, primary scorer) or multi-week absence cluster.",
-              "Early red card or penalty-heavy tie signals chaos rising.",
-              "Draw forces multiple heavyweights into the same quarter of the bracket."
-            ]
-          },
-          citations: [
-            {
-              label: "Polymarket, UEFA Champions League Winner (market baseline)",
-              url: "https://polymarket.com/event/uefa-champions-league-winner",
-              note: "Market-implied distribution and volume"
-            },
-            {
-              label: "UEFA Champions League official competition hub",
-              url: "https://www.uefa.com/uefachampionsleague/",
-              note: "Official results and competition structure"
-            }
-          ]
-        },
-        sources: [
-          { label: "Polymarket, UEFA Champions League Winner", url: "https://polymarket.com/event/uefa-champions-league-winner" },
-          { label: "UEFA Champions League official", url: "https://www.uefa.com/uefachampionsleague/" }
-        ],
-        tags: ["predictionmarkets","sports","soccer","ucl","knockout","injuries","draw","variance"]
-      },
-
-      {
-        id: "pm-epl-winner-2026",
-        category: "Prediction Markets",
-        categories: ["Prediction Markets","Sports"],
-        title: "English Premier League Winner (2025–26), market + scenario view",
-        summary: "Arsenal are priced as a clear favorite, City remain the primary threat. Most likely path is the leader staying normal the longest through congestion.",
-        due: "2026-05-27",
-        updated: "2025-12-16",
-        confidence: 60,
-        status: "warn",
-        call: "Base case (65%): two-team race, leader converts the advantage through steady points pace and rotation discipline. Chase-down case (25%): City heater + leader wobble in congestion weeks. Surprise case (10%): third contender runs hot while the top two bleed points. Market baseline (Polymarket): Arsenal 54%, Man City 29%, Liverpool 9%, Chelsea 4%.",
-        band: "Medium",
-        most_likely_driver: "Injury-adjusted squad strength and congestion management, with January window and finishing regression as secondary levers.",
-        drivers: [
-          "Markets imply a two-team structure with Arsenal heavily favored and City the main alternative.",
-          "League outcomes are driven by repeatable advantage: depth, rotation, and defense stability over months.",
-          "January window and injury cascades are the biggest practical re-pricers in-season."
-        ],
-        assumptions: [
-          "No sustained multi-month injury absence to multiple starters for the market leader.",
-          "No structural collapse in defensive performance for the top two.",
-          "January window does not produce a transformational signing for a long-shot contender."
-        ],
-        market_meta: { platform: "Polymarket", volume: "$105m", expiry_note: "Season" },
-        quick_odds: [
-          { label: "Arsenal", pct: 54 },
-          { label: "Man City", pct: 29 },
-          { label: "Liverpool", pct: 9 }
-        ],
-        market_odds: [
-          { label: "Arsenal", pct: 54 },
-          { label: "Man City", pct: 29 },
-          { label: "Liverpool", pct: 9 },
-          { label: "Chelsea", pct: 5 },
-          { label: "Man United", pct: 3 },
-          { label: "Field/Other", pct: 0 }
-        ],
-        scenario_outlook: {
-          horizon: "Season",
-          scenarios: [
-            { id: "A", label: "BASE. Two-team race, leader converts", weight: 0.65 },
-            { id: "B", label: "CHASE. City heater + leader wobble", weight: 0.25 },
-            { id: "C", label: "SURPRISE. Third contender spikes", weight: 0.10 }
-          ]
-        },
-        mpe_analysis: {
-          ticker: "EPL",
-          exchange: "Premier League",
-          horizon_days: 160,
-          horizon_end: "2026-05-27",
-          as_of: "2025-12-16",
-          price_anchor_label: "MARKET BASELINE (Polymarket)",
-          price_anchor: "Arsenal 54%, Man City 29%",
-          currency: "",
-          volatility_posture: "Medium, league compounding with injury shocks",
-          driver_chips: [
-            "Depth and rotation quality",
-            "Injury-adjusted squad strength",
-            "Fixture congestion and travel",
-            "January window impact",
-            "Finishing regression and set pieces"
-          ],
-          verified_anchors: [
-            {
-              title: "Polymarket baseline distribution",
-              detail: "Current market-implied win chances for the 2025–26 Premier League title.",
-              source: "Polymarket",
-              url: "https://polymarket.com/event/english-premier-league-winner"
-            },
-            {
-              title: "Official league source",
-              detail: "Official Premier League competition hub and standings.",
-              source: "Premier League",
-              url: "https://www.premierleague.com/"
-            }
-          ],
-          scenarios: [
-            {
-              id: "A",
-              name: "Base, leader converts through consistency",
-              weight_pct: 65,
-              conditions: [
-                "Stable defensive performance and steady points pace",
-                "Rotation prevents fatigue collapse in congested windows",
-                "January window is additive, not disruptive"
-              ],
-              expected_behavior: "Two-team race remains intact, the favorite stays favorite and closes out the season."
-            },
-            {
-              id: "B",
-              name: "Chase-down, City surge meets leader wobble",
-              weight_pct: 25,
-              conditions: [
-                "A 10 to 14 match heater for City",
-                "Leader drops points in two congestion windows",
-                "Key injury or minutes-load effect emerges"
-              ],
-              expected_behavior: "Title odds compress sharply and the last six weeks become a pressure race."
-            },
-            {
-              id: "C",
-              name: "Surprise, a third contender spikes",
-              weight_pct: 10,
-              conditions: [
-                "Top two bleed points simultaneously",
-                "Third contender has elite defense and finishing spike",
-                "January upgrade adds meaningful net rating"
-              ],
-              expected_behavior: "A three-way race forms and the market reprices long shots upward."
-            }
-          ],
-          triggers: {
-            upside: [
-              "Leader survives congestion weeks with 2+ wins and no key injuries.",
-              "Underlying defensive metrics stay stable for 5+ matches.",
-              "January window adds depth rather than reshapes tactics."
-            ],
-            downside: [
-              "Two dropped-point weeks inside a 10-day span.",
-              "Spine injury to creator, striker, or CB organizer.",
-              "A major January signing for a challenger changes underlying strength."
-            ]
-          },
-          citations: [
-            {
-              label: "Polymarket, English Premier League Winner (market baseline)",
-              url: "https://polymarket.com/event/english-premier-league-winner",
-              note: "Market-implied distribution and end date"
-            },
-            {
-              label: "Premier League official hub",
-              url: "https://www.premierleague.com/",
-              note: "Official standings and competition source"
-            }
-          ]
-        },
-        sources: [
-          { label: "Polymarket, English Premier League Winner", url: "https://polymarket.com/event/english-premier-league-winner" },
-          { label: "Premier League official", url: "https://www.premierleague.com/" }
-        ],
-        tags: ["predictionmarkets","sports","soccer","epl","injuries","congestion","januarywindow","regression"]
-      },
-
-      {
-        id: "pm-worldcup-winner-2026",
-        category: "Prediction Markets",
-        categories: ["Prediction Markets","Sports"],
-        title: "2026 FIFA World Cup Winner, market + scenario view",
-        summary: "Spain lead the market, but tournaments punish predictability. Most likely path is a favorite executing, with real chaos tail risk in a 48-team format.",
-        due: "2026-07-19",
-        updated: "2025-12-16",
-        confidence: 56,
-        status: "warn",
-        call: "Base case (55%): a traditional favorite wins through depth and tactical control. Peak-cycle case (30%): a second-tier contender peaks at the right time. Chaos case (15%): bracket shocks cluster and an outsider path becomes real. Market baseline (Polymarket): Spain 18%, England 14%, France 14%, Brazil 9%, Portugal 9%.",
-        band: "Wide",
-        most_likely_driver: "Roster availability and coaching pragmatism in knockouts, with set-piece efficiency and travel recovery as hidden multipliers.",
-        drivers: [
-          "Market baseline points to Spain as leader with a tight cluster behind, indicating no dominant runaway favorite.",
-          "Tournament outcomes are driven by availability, set pieces, and matchup tree more than long-run league compounding.",
-          "A larger format increases pathways for shocks while still favoring depth."
-        ],
-        assumptions: [
-          "No pre-tournament injury removes multiple stars from a top-three favorite.",
-          "No extreme group-stage draw disadvantages one favorite disproportionately.",
-          "Top teams remain motivated and tactically pragmatic in knockouts."
-        ],
-        market_meta: { platform: "Polymarket", volume: "$5m", expiry_note: "Tournament" },
-        quick_odds: [
-          { label: "Spain", pct: 18 },
-          { label: "France", pct: 14 },
-          { label: "England", pct: 14 }
-        ],
-        market_odds: [
-          { label: "Spain", pct: 18 },
-          { label: "England", pct: 14 },
-          { label: "France", pct: 14 },
-          { label: "Portugal", pct: 9 },
-          { label: "Brazil", pct: 9 },
-          { label: "Argentina", pct: 8 },
-          { label: "Germany", pct: 7 },
-          { label: "Norway", pct: 6 },
-          { label: "Netherlands", pct: 5 },
-          { label: "Field/Other", pct: 20 }
-        ],
-        scenario_outlook: {
-          horizon: "Tournament",
-          scenarios: [
-            { id: "A", label: "BASE. Favorite executes", weight: 0.55 },
-            { id: "B", label: "PEAK. New-cycle contender peaks", weight: 0.30 },
-            { id: "C", label: "CHAOS. Outsider via bracket shocks", weight: 0.15 }
-          ]
-        },
-        mpe_analysis: {
-          ticker: "WC26",
-          exchange: "FIFA",
-          horizon_days: 215,
-          horizon_end: "2026-07-19",
-          as_of: "2025-12-16",
-          price_anchor_label: "MARKET BASELINE (Polymarket)",
-          price_anchor: "Spain 18%, England 14%, France 14%",
-          currency: "",
-          volatility_posture: "High, tournament variance",
-          driver_chips: [
-            "Roster availability and injuries",
-            "Set-piece efficiency",
-            "Knockout pragmatism and coaching",
-            "Travel, recovery, and heat management",
-            "Bracket and group draw shape"
-          ],
-          verified_anchors: [
-            {
-              title: "Polymarket baseline distribution",
-              detail: "Current market-implied win chances for the 2026 World Cup.",
-              source: "Polymarket",
-              url: "https://polymarket.com/event/2026-fifa-world-cup-winner-595"
-            },
-            {
-              title: "Official competition source",
-              detail: "Official FIFA competition hub for the World Cup.",
-              source: "FIFA",
-              url: "https://www.fifa.com/"
-            }
-          ],
-          scenarios: [
-            {
-              id: "A",
-              name: "Base, traditional favorite wins",
-              weight_pct: 55,
-              conditions: [
-                "Top roster stays healthy enough to keep its spine intact",
-                "Set-piece defense holds under pressure",
-                "Coach chooses pragmatic match control in knockouts"
-              ],
-              expected_behavior: "A top favorite wins with controlled game states, limited chaos exposure."
-            },
-            {
-              id: "B",
-              name: "Peak-cycle contender peaks at the right time",
-              weight_pct: 30,
-              conditions: [
-                "Second-tier contender hits form and finishing spike during knockouts",
-                "Key veterans stay available and cohesive",
-                "Bracket avoids multiple elite opponents until late"
-              ],
-              expected_behavior: "A near-favorite wins as the best version of itself arrives in June and July."
-            },
-            {
-              id: "C",
-              name: "Chaos, outsider path becomes real",
-              weight_pct: 15,
-              conditions: [
-                "Early upset removes one or two favorites from a side of the bracket",
-                "Keeper spike and set-piece goals deliver leverage wins",
-                "Momentum and matchups dominate"
-              ],
-              expected_behavior: "A non-elite finalist appears and the market reprices quickly mid-tournament."
-            }
-          ],
-          triggers: {
-            upside: [
-              "A top favorite shows stable defense and set-piece control in warm-up matches.",
-              "Roster announcements confirm full availability for the spine.",
-              "Group draw gives at least one elite side a relatively clean path."
-            ],
-            downside: [
-              "Star injury before the tournament to a favorite’s spine.",
-              "Group-stage struggles, two draws or a loss for a top seed.",
-              "Set-piece vulnerability appears repeatedly in recent matches."
-            ]
-          },
-          citations: [
-            {
-              label: "Polymarket, 2026 FIFA World Cup Winner (market baseline)",
-              url: "https://polymarket.com/event/2026-fifa-world-cup-winner-595",
-              note: "Market-implied distribution and volume"
-            },
-            {
-              label: "FIFA official hub",
-              url: "https://www.fifa.com/",
-              note: "Official competition source"
-            }
-          ]
-        },
-        sources: [
-          { label: "Polymarket, 2026 FIFA World Cup Winner", url: "https://polymarket.com/event/2026-fifa-world-cup-winner-595" },
-          { label: "FIFA official", url: "https://www.fifa.com/" }
-        ],
-        tags: ["predictionmarkets","sports","soccer","worldcup","tournament","injuries","setpieces","bracket"]
-      },
-
-      {
-        id: "pm-nba-champion-2026",
-        category: "Prediction Markets",
-        categories: ["Prediction Markets","Sports"],
-        title: "2026 NBA Champion, market + scenario view",
-        summary: "OKC are priced as a runaway favorite. The only reliable counter is health and matchups, because one hamstring can erase a season.",
-        due: "2026-07-01",
-        updated: "2025-12-16",
-        confidence: 57,
-        status: "warn",
-        call: "Base case (55%): best efficiency team wins with stable availability. Health swing (30%): a challenger gets healthier at the right time and the tree reshapes. Bracket breaks (15%): injuries and upset chains change the matchup map. Market baseline (Polymarket): OKC 47%, Nuggets 9%, Rockets 7%, Knicks 7%.",
-        band: "Medium",
-        most_likely_driver: "Injury-adjusted net rating and playoff matchup tree, with trade deadline and seeding as secondary levers.",
-        drivers: [
-          "Market baseline is unusually concentrated on OKC, signaling strong consensus on underlying strength.",
-          "Playoff outcomes are highly sensitive to availability, matchups, and late-season minutes load.",
-          "Trade deadline moves can change the 8-man rotation quality more than casual fans admit."
-        ],
-        assumptions: [
-          "No multi-week injury to the market leader’s top two players near the playoffs.",
-          "No dramatic mid-season trade that creates a new superteam dynamic.",
-          "Playoff seeding does not produce an extreme matchup disadvantage for the market leader."
-        ],
-        market_meta: { platform: "Polymarket", volume: "$89m", expiry_note: "Season" },
-        quick_odds: [
-          { label: "OKC Thunder", pct: 47 },
-          { label: "Nuggets", pct: 9 },
-          { label: "Rockets", pct: 7 }
-        ],
-        market_odds: [
-          { label: "Oklahoma City Thunder", pct: 47 },
-          { label: "Denver Nuggets", pct: 9 },
-          { label: "Houston Rockets", pct: 7 },
-          { label: "New York Knicks", pct: 7 },
-          { label: "San Antonio Spurs", pct: 5 },
-          { label: "Los Angeles Lakers", pct: 4 },
-          { label: "Detroit Pistons", pct: 4 },
-          { label: "Cleveland Cavaliers", pct: 4 },
-          { label: "Field/Other", pct: 13 }
-        ],
-        scenario_outlook: {
-          horizon: "Season",
-          scenarios: [
-            { id: "A", label: "BASE. Best team wins, stable health", weight: 0.55 },
-            { id: "B", label: "HEALTH. Challenger peaks in playoffs", weight: 0.30 },
-            { id: "C", label: "CHAOS. Bracket breaks via injuries", weight: 0.15 }
-          ]
-        },
-        mpe_analysis: {
-          ticker: "NBA26",
-          exchange: "NBA",
-          horizon_days: 198,
-          horizon_end: "2026-07-01",
-          as_of: "2025-12-16",
-          price_anchor_label: "MARKET BASELINE (Polymarket)",
-          price_anchor: "OKC 47%, Nuggets 9%",
-          currency: "",
-          volatility_posture: "Medium, injury and matchup sensitive",
-          driver_chips: [
-            "Injury-adjusted net rating",
-            "Trade deadline rotation quality",
-            "Playoff matchup tree",
-            "Seeding and home court",
-            "Shooting variance in playoff series"
-          ],
-          verified_anchors: [
-            {
-              title: "Polymarket baseline distribution",
-              detail: "Current market-implied win chances for the 2026 NBA title.",
-              source: "Polymarket",
-              url: "https://polymarket.com/event/2026-nba-champion"
-            },
-            {
-              title: "Official league source",
-              detail: "NBA official competition source used for resolution of the underlying market.",
-              source: "NBA",
-              url: "https://www.nba.com/"
-            }
-          ],
-          scenarios: [
-            {
-              id: "A",
-              name: "Base, best team converts with stable availability",
-              weight_pct: 55,
-              conditions: [
-                "Market leader stays healthy through April to June",
-                "Net rating translates to playoff matchups",
-                "Rotation depth avoids minutes-load collapse"
-              ],
-              expected_behavior: "Favorite remains favorite, title goes to the best efficiency profile."
-            },
-            {
-              id: "B",
-              name: "Health swing, challenger peaks at the right time",
-              weight_pct: 30,
-              conditions: [
-                "A challenger gets healthier while the favorite loses depth",
-                "Trade deadline upgrade improves a contender’s 8-man reliability",
-                "Bracket matchups favor the challenger"
-              ],
-              expected_behavior: "Odds compress and the finals become less predictable than the market baseline suggests."
-            },
-            {
-              id: "C",
-              name: "Chaos, injuries and upsets reshape the bracket",
-              weight_pct: 15,
-              conditions: [
-                "One or more top seeds lose a star for a series",
-                "Upset chains shift matchups",
-                "Variance dominates at the margins"
-              ],
-              expected_behavior: "Multiple contenders become live late, and a mid-tier team can steal the title."
-            }
-          ],
-          triggers: {
-            upside: [
-              "Favorite enters playoffs healthy with stable rotation minutes.",
-              "Seeding produces favorable matchups and avoids a stylistic nightmare early.",
-              "No major trade creates a new elite challenger profile."
-            ],
-            downside: [
-              "Star injury news near playoffs, especially hamstring and ankle risks.",
-              "Trade deadline adds a high-leverage piece to a top-4 contender.",
-              "Seeding forces an early matchup against a high-variance opponent."
-            ]
-          },
-          citations: [
-            {
-              label: "Polymarket, 2026 NBA Champion (market baseline)",
-              url: "https://polymarket.com/event/2026-nba-champion",
-              note: "Market-implied distribution and volume"
-            },
-            {
-              label: "NBA official hub",
-              url: "https://www.nba.com/",
-              note: "Official competition source"
-            }
-          ]
-        },
-        sources: [
-          { label: "Polymarket, 2026 NBA Champion", url: "https://polymarket.com/event/2026-nba-champion" },
-          { label: "NBA official", url: "https://www.nba.com/" }
-        ],
-        tags: ["predictionmarkets","sports","nba","championship","injuries","trade-deadline","matchups","seeding"]
-      },
-
-      {
-        id: "pm-nba-cup-final-spurs-knicks-2025-12-16",
-        category: "Prediction Markets",
-        categories: ["Prediction Markets","Sports"],
-        short_horizon: true,
-        title: "NBA Cup Final, Spurs vs Knicks, moneyline (short horizon)",
-        summary: "One game. The market leans Knicks. Most likely path is normal rotations and half-court control, but one hot quarter flips everything.",
-        due: "2025-12-16",
-        updated: "2025-12-16",
-        confidence: 50,
-        status: "warn",
-        call: "Base case (56%): Knicks control pace and physicality in the half court. Spurs surge case (34%): pace plus star gravity forces rotation stress. Chaos case (10%): foul trouble or 3-point variance decides it. Market baseline: Knicks 56%, Spurs 44%.",
-        band: "Wide",
-        most_likely_driver: "Late injury news, starting lineups, and 3-point variance.",
-        drivers: [
-          "Single-game markets are dominated by availability and variance, not long-run team strength.",
-          "Pace and turnover margin often decide Cup-style finals.",
-          "3-point swing and foul trouble are the highest leverage volatility sources."
-        ],
-        assumptions: [
-          "No late scratch of a primary creator within 60 minutes of tip.",
-          "Normal rotation and minutes limits apply.",
-          "No extreme officiating-driven foul imbalance early."
-        ],
-        market_meta: { platform: "Polymarket", volume: "$2m", expiry_note: "Short Horizon" },
-        quick_odds: [
-          { label: "Knicks", pct: 56 },
-          { label: "Spurs", pct: 44 }
-        ],
-        market_odds: [
-          { label: "Knicks win", pct: 56 },
-          { label: "Spurs win", pct: 44 }
-        ],
-        scenario_outlook: {
-          horizon: "Game",
-          scenarios: [
-            { id: "A", label: "BASE. Knicks control half-court", weight: 0.56 },
-            { id: "B", label: "PACE. Spurs surge and run", weight: 0.34 },
-            { id: "C", label: "CHAOS. One weird quarter", weight: 0.10 }
-          ]
-        },
-        mpe_analysis: {
-          ticker: "NBA-CUP",
-          exchange: "NBA",
-          horizon_days: 1,
-          horizon_end: "2025-12-16",
-          as_of: "2025-12-16",
-          price_anchor_label: "MARKET BASELINE",
-          price_anchor: "Knicks 56%, Spurs 44%",
-          currency: "",
-          volatility_posture: "High, single-game variance",
-          driver_chips: [
-            "Lineup availability",
-            "Pace control",
-            "Turnover margin",
-            "3-point variance",
-            "Foul trouble"
-          ],
-          verified_anchors: [
-            {
-              title: "Market anchor",
-              detail: "Single-game probability snapshot from the prediction market.",
-              source: "Polymarket",
-              url: "https://polymarket.com/"
-            }
-          ],
-          scenarios: [
-            {
-              id: "A",
-              name: "Base, Knicks control half-court and rebound margin",
-              weight_pct: 56,
-              conditions: [
-                "Normal rotations and minutes",
-                "Knicks win the half-court possession battle",
-                "No early foul trouble on core defenders"
-              ],
-              expected_behavior: "Knicks win a controlled final with fewer transition possessions."
-            },
-            {
-              id: "B",
-              name: "Spurs surge via pace and star gravity",
-              weight_pct: 34,
-              conditions: [
-                "Spurs push pace and create early offense",
-                "Knicks turnover margin worsens",
-                "Knicks bench minutes become a vulnerability"
-              ],
-              expected_behavior: "Spurs steal the game by forcing tempo and winning a 6-minute run."
-            },
-            {
-              id: "C",
-              name: "Chaos quarter decides it",
-              weight_pct: 10,
-              conditions: [
-                "3-point shooting swings",
-                "Foul trouble or minor injury changes rotations",
-                "One quarter produces +12 points swing"
-              ],
-              expected_behavior: "Outcome is driven by variance rather than structure."
-            }
-          ],
-          triggers: {
-            upside: [
-              "Confirmed starting lineups and normal minutes for Knicks key players.",
-              "Low turnover first quarter and steady half-court pace."
-            ],
-            downside: [
-              "Late scratch or minutes limit announcement.",
-              "Early foul trouble or 3-point swing by halftime."
-            ]
-          },
-          citations: [
-            {
-              label: "Polymarket home (market reference)",
-              url: "https://polymarket.com/",
-              note: "Use the specific event link if available"
-            }
-          ]
-        },
-        sources: [
-          { label: "Polymarket", url: "https://polymarket.com/" },
-          { label: "NBA official", url: "https://www.nba.com/" }
-        ],
-        tags: ["predictionmarkets","sports","nba","short-horizon","moneyline","variance"]
-      },
-
-      {
-        id: "pm-laliga-girona-atletico-2025-12-21",
-        category: "Prediction Markets",
-        categories: ["Prediction Markets","Sports"],
-        short_horizon: true,
-        title: "LaLiga, Girona vs Atlético Madrid, 1X2 (short horizon)",
-        summary: "Market leans Atlético, but draws and early goals are the trap doors. Most likely path is Atlético control, with a meaningful draw tail.",
-        due: "2025-12-21",
-        updated: "2025-12-16",
-        confidence: 48,
-        status: "warn",
-        call: "Base case (55%): Atlético win via quality and game control. Draw case (25%): low-scoring tactical lock. Upset case (20%): early Girona goal plus compact defense. Market baseline: Atlético 57%, Girona 20%, Draw 23%.",
-        band: "Wide",
-        most_likely_driver: "Starting XI and early goal timing, plus set-piece conversion.",
-        drivers: [
-          "Single matches are leverage events: the first goal changes game state and probabilities sharply.",
-          "Draw probability is often underappreciated when favorites play conservatively away.",
-          "Set pieces and keeper performance can override expected open-play dominance."
-        ],
-        assumptions: [
-          "No surprise red card in the first 30 minutes.",
-          "No major lineup downgrade for Atlético relative to expectations.",
-          "Weather and pitch conditions are normal."
-        ],
-        market_meta: { platform: "Polymarket", volume: "$963k", expiry_note: "Short Horizon" },
-        quick_odds: [
-          { label: "Atlético", pct: 57 },
-          { label: "Draw", pct: 23 },
-          { label: "Girona", pct: 20 }
-        ],
-        market_odds: [
-          { label: "Atlético win", pct: 57 },
-          { label: "Draw", pct: 23 },
-          { label: "Girona win", pct: 20 }
-        ],
-        scenario_outlook: {
-          horizon: "Match",
-          scenarios: [
-            { id: "A", label: "BASE. Atlético win", weight: 0.55 },
-            { id: "B", label: "DRAW. Tactical lock", weight: 0.25 },
-            { id: "C", label: "UPSET. Early goal holds", weight: 0.20 }
-          ]
-        },
-        mpe_analysis: {
-          ticker: "LALIGA-1X2",
-          exchange: "LaLiga",
-          horizon_days: 6,
-          horizon_end: "2025-12-21",
-          as_of: "2025-12-16",
-          price_anchor_label: "MARKET BASELINE",
-          price_anchor: "Atlético 57%, Draw 23%, Girona 20%",
-          currency: "",
-          volatility_posture: "High, match variance",
-          driver_chips: [
-            "Lineups and rotation",
-            "First-goal timing",
-            "Set pieces and keeper form",
-            "Away-game conservatism",
-            "Red-card risk"
-          ],
-          verified_anchors: [
-            {
-              title: "Market anchor",
-              detail: "Single-match outcome distribution from the prediction market.",
-              source: "Polymarket",
-              url: "https://polymarket.com/"
-            }
-          ],
-          scenarios: [
-            {
-              id: "A",
-              name: "Base, Atlético impose control and win",
-              weight_pct: 55,
-              conditions: [
-                "Atlético start XI is close to full strength",
-                "They avoid early concessions and manage game state",
-                "Set-piece defense holds"
-              ],
-              expected_behavior: "Atlético win by controlling risk and converting one or two high-quality chances."
-            },
-            {
-              id: "B",
-              name: "Draw, low-scoring tactical lock",
-              weight_pct: 25,
-              conditions: [
-                "Early minutes are cautious and low event",
-                "Girona stay compact and limit big chances",
-                "Atlético accept a point late"
-              ],
-              expected_behavior: "A draw emerges as the modal outcome if the first goal does not arrive early."
-            },
-            {
-              id: "C",
-              name: "Upset, Girona score early and hold",
-              weight_pct: 20,
-              conditions: [
-                "Girona score first within 35 minutes",
-                "Keeper performance plus compact defense holds",
-                "Atlético chase and open transitions"
-              ],
-              expected_behavior: "Upset becomes live when game state flips early."
-            }
-          ],
-          triggers: {
-            upside: [
-              "Atlético start their strongest XI and avoid rotation.",
-              "No early goal and Girona stay pinned back."
-            ],
-            downside: [
-              "Atlético rotation or late scratch in the spine.",
-              "Early Girona goal, or early red card shifts the match state."
-            ]
-          },
-          citations: [
-            {
-              label: "Polymarket home (market reference)",
-              url: "https://polymarket.com/",
-              note: "Use the specific event link if available"
-            }
-          ]
-        },
-        sources: [
-          { label: "Polymarket", url: "https://polymarket.com/" },
-          { label: "LaLiga official", url: "https://www.laliga.com/" }
-        ],
-        tags: ["predictionmarkets","sports","soccer","laliga","short-horizon","1x2","variance"]
-      },
-      {
         id: "caribbean-tourism-peak",
         category: "Caribbean",
         carib_area: "Regional",
@@ -2938,9 +2102,470 @@
           { label: "ECCB CPI, Saint Lucia", url: "https://www.eccb-centralbank.org/statistics-category/other-real-sector/consumer-price-index-saint-lucia/q" }
         ],
         tags: ["saintlucia","caribbean","costofliving","inflation","electricity","lucelec","fuel","fsca","tariff","renewables","solar","battery","policy","6m","scenario"]
+      },
+
+      {
+        id: "pm-portugal-presidential-election-2026",
+        category: "Prediction Markets",
+        categories: ["Prediction Markets","Politics"],
+        theme_key: "portugal",
+        stamp: "PT",
+        title: "Portugal Presidential Election (2026), market + scenario view",
+        summary: "Market favors Luís Marques Mendes, but polling points to a runoff. The decisive variable is who becomes the second-round consensus when coalition and turnout dynamics harden.",
+        due: "2026-01-25",
+        updated: "2025-12-17",
+        confidence: 58,
+        status: "warn",
+        call: "Base case (50%): establishment consolidation in the runoff, second-choice flows favor the mainstream option. Fragmentation case (40%): first-round dispersion and turnout pockets determine the runoff pairing and re-price the race. Surprise surge (10%): a late momentum swing lifts an outsider lane. Market baseline (Polymarket): Mendes 64%, Gouveia e Melo 22%, Ventura 6.5%, Cotrim Figueiredo 5.1%, Seguro ~4%. Poll anchor (Reuters): a tight first round and a likely Jan 18 first round plus Feb 8 runoff dynamic.",
+        band: "Medium",
+        most_likely_driver: "Runoff pairing and second-choice flows, plus turnout composition, especially whether the electorate consolidates around a mainstream option in round two.",
+        drivers: [
+          "Polymarket currently implies a strong lead for Mendes, but Reuters polling suggests a closer first round and likely runoff, making second-choice flows decisive.",
+          "Portugal uses a two-round presidential system if no candidate exceeds 50% in round one, so the runoff pairing is the key structural variable.",
+          "High rejection risk can matter more than first-round strength, especially for polarizing candidates."
+        ],
+        assumptions: [
+          "A runoff occurs (no outright first-round winner).",
+          "No major scandal or exogenous shock fundamentally alters candidate viability in the final weeks.",
+          "Turnout patterns are broadly consistent with recent presidential elections."
+        ],
+        market_meta: { platform: "Polymarket", volume: "$69.8m", expiry_note: "Election" },
+        quick_odds: [
+          { label: "Mendes", pct: 64 },
+          { label: "Gouveia e Melo", pct: 22 },
+          { label: "Ventura", pct: 6.5 }
+        ],
+        market_odds: [
+          { label: "Luís Marques Mendes (PSD)", pct: 64 },
+          { label: "Henrique Gouveia e Melo (IND)", pct: 22 },
+          { label: "André Ventura (CH)", pct: 6.5 },
+          { label: "João Cotrim Figueiredo (IL)", pct: 5.1 },
+          { label: "António José Seguro (IND)", pct: "4" },
+          { label: "Other", pct: "<1" }
+        ],
+        scenario_outlook: {
+          horizon: "Election",
+          scenarios: [
+            { id: "A", label: "BASE. Establishment consolidation", weight: 0.50 },
+            { id: "B", label: "RUNOFF. Pairing drives repricing", weight: 0.40 },
+            { id: "C", label: "SURGE. Outsider lane breaks late", weight: 0.10 }
+          ]
+        },
+        mpe_analysis: {
+          ticker: "PT-PRES",
+          exchange: "Portugal",
+          horizon_days: 39,
+          horizon_end: "2026-01-25",
+          as_of: "2025-12-17",
+          price_anchor_label: "MARKET BASELINE (Polymarket)",
+          price_anchor: "Mendes 64%, Gouveia 22%",
+          currency: "",
+          volatility_posture: "Moderate, runoff-driven",
+          driver_chips: [
+            "Runoff pairing and second-choice flows",
+            "Turnout composition and coalition endorsements",
+            "Rejection risk versus broad acceptability",
+            "Late campaign momentum and credibility shocks"
+          ],
+          verified_anchors: [
+            { title: "Market baseline", detail: "Polymarket implied probabilities for Portugal Presidential Election.", source: "Polymarket", url: "https://polymarket.com/event/portugal-presidential-election" },
+            { title: "Polling anchor and expected runoff", detail: "Reuters reported Ventura and Gouveia e Melo tied at 18% with Mendes at 16%, and a Jan 18 first round plus Feb 8 runoff expected.", source: "Reuters", url: "https://www.reuters.com/world/poll-shows-farright-leader-independent-admiral-tied-race-portugals-presidency-2025-11-28/" }
+          ],
+          scenarios: [
+            { id: "A", name: "Base, mainstream consolidation in runoff", weight_pct: 50, conditions: ["Runoff pairing favors a mainstream consensus outcome", "Endorsements cohere and second-choice flows concentrate"], expected_behavior: "Market favorite holds advantage as runoff coalition logic dominates." },
+            { id: "B", name: "Runoff math dominates, pairing drives repricing", weight_pct: 40, conditions: ["First round remains tight and fragmented", "Runoff pairing is decisive for second-choice flows"], expected_behavior: "Probabilities shift sharply once runoff pairing becomes clearer." },
+            { id: "C", name: "Surge case, outsider lane breaks late", weight_pct: 10, conditions: ["Late turnout swing or credibility shock", "Outsider lane expands beyond base"], expected_behavior: "A surprise finalist emerges or the runoff becomes more volatile than expected." }
+          ],
+          triggers: {
+            upside: [
+              "Polling shows consolidation around Mendes in a runoff scenario.",
+              "Endorsement signals reduce fragmentation and raise acceptability.",
+              "No late credibility shock to the market leader."
+            ],
+            downside: [
+              "Polling tightens across multiple candidates, increasing runoff pairing uncertainty.",
+              "A turnout shock or scandal changes coalition behavior.",
+              "Evidence that second-choice flows do not consolidate as expected."
+            ]
+          },
+          citations: [
+            { label: "Polymarket, Portugal Presidential Election", url: "https://polymarket.com/event/portugal-presidential-election", note: "Market baseline and volume" },
+            { label: "Reuters, Portugal presidential poll and runoff expectation", url: "https://www.reuters.com/world/poll-shows-farright-leader-independent-admiral-tied-race-portugals-presidency-2025-11-28/", note: "ICS/ISCTE poll and expected Jan 18/Feb 8 structure" }
+          ]
+        },
+        sources: [
+          { label: "Polymarket, Portugal Presidential Election", url: "https://polymarket.com/event/portugal-presidential-election" },
+          { label: "Reuters, Portugal presidential poll", url: "https://www.reuters.com/world/poll-shows-farright-leader-independent-admiral-tied-race-portugals-presidency-2025-11-28/" }
+        ],
+        tags: ["predictionmarkets","politics","portugal","election","runoff","coalitions","turnout","sentiment"]
+      },
+
+      {
+        id: "pm-democratic-nominee-2028",
+        category: "Prediction Markets",
+        categories: ["Prediction Markets","Politics"],
+        theme_key: "usa",
+        stamp: "D28",
+        title: "Democratic Presidential Nominee 2028, market + scenario view",
+        summary: "Newsom is the market anchor. The real uncertainty is whether the field stays open until after the 2026 midterms, creating a late-entry window and a longer consolidation fight.",
+        due: "2028-11-07",
+        updated: "2025-12-17",
+        confidence: 54,
+        status: "warn",
+        call: "Base case (45%): early front-runner consolidates via endorsements and fundraising. Contested case (35%): multiple lanes remain viable and the race runs long. Late-entry case (20%): a new entrant after the 2026 midterms reshapes the field. Market baseline (Polymarket): Newsom 36%, AOC 11%, Harris 5.1%, Shapiro 5.0%, Buttigieg 5.0%, Mark Kelly 3.2%.",
+        band: "Wide",
+        most_likely_driver: "Endorsement and donor-network consolidation versus a fragmented field that stays open through the 2026 midterms.",
+        drivers: [
+          "Nomination dynamics are dominated by fundraising, endorsements, and early-state momentum, not national-name recognition alone.",
+          "The 2026 midterms are a structural inflection point that can validate or destabilize party strategy and create late-entry opportunities.",
+          "Media share-of-voice and favorability movement matter most when the field is crowded and cues are scarce."
+        ],
+        assumptions: [
+          "No extraordinary event forces a major candidate to exit early or a new candidate to enter immediately.",
+          "Early-state dynamics remain important for legitimacy and momentum.",
+          "Party elites and donors behave as coordinating agents rather than staying neutral indefinitely."
+        ],
+        market_meta: { platform: "Polymarket", volume: "$381.6m", expiry_note: "Nomination" },
+        quick_odds: [
+          { label: "Newsom", pct: 36 },
+          { label: "AOC", pct: 11 },
+          { label: "Harris", pct: 5.1 }
+        ],
+        market_odds: [
+          { label: "Gavin Newsom", pct: 36 },
+          { label: "Alexandria Ocasio-Cortez", pct: 11 },
+          { label: "Kamala Harris", pct: 5.1 },
+          { label: "Josh Shapiro", pct: 5.0 },
+          { label: "Pete Buttigieg", pct: 5.0 },
+          { label: "Mark Kelly", pct: 3.2 },
+          { label: "Jon Ossoff", pct: 2.9 },
+          { label: "J.B. Pritzker", pct: 2.7 },
+          { label: "Field/Other", pct: "—" }
+        ],
+        scenario_outlook: {
+          horizon: "Nomination cycle",
+          scenarios: [
+            { id: "A", label: "BASE. Early consolidation", weight: 0.45 },
+            { id: "B", label: "CONTESTED. Multi-lane fight", weight: 0.35 },
+            { id: "C", label: "LATE. Post-midterms entrant", weight: 0.20 }
+          ]
+        },
+        mpe_analysis: {
+          ticker: "DEM28",
+          exchange: "US Politics",
+          horizon_days: 1057,
+          horizon_end: "2028-11-07",
+          as_of: "2025-12-17",
+          price_anchor_label: "MARKET BASELINE (Polymarket)",
+          price_anchor: "Newsom 36%, AOC 11%",
+          currency: "",
+          volatility_posture: "High, long runway",
+          driver_chips: [
+            "Endorsements and donor networks",
+            "Early-state momentum",
+            "Post-midterms entry window",
+            "Media share-of-voice and favorability"
+          ],
+          verified_anchors: [
+            { title: "Market baseline", detail: "Polymarket implied probabilities for Democratic Presidential Nominee 2028.", source: "Polymarket", url: "https://polymarket.com/event/democratic-presidential-nominee-2028" }
+          ],
+          scenarios: [
+            { id: "A", name: "Base, early front-runner consolidates", weight_pct: 45, conditions: ["Endorsement cascade begins early", "Fundraising and institutional cues align"], expected_behavior: "Front-runner expands lead as elites coordinate." },
+            { id: "B", name: "Contested primary, multi-lane fight persists", weight_pct: 35, conditions: ["Multiple lanes stay funded and credible", "Early states do not resolve the field quickly"], expected_behavior: "Probabilities remain dispersed and shift with momentum." },
+            { id: "C", name: "Late entrant reshapes the race", weight_pct: 20, conditions: ["A new high-profile entrant post-2026", "Narrative shock changes electability assumptions"], expected_behavior: "Field probability rises and the anchor candidate’s share compresses." }
+          ],
+          triggers: {
+            upside: [
+              "Fundraising and endorsements accelerate for the leading candidate.",
+              "Early polling in key early states shows a durable advantage.",
+              "No major late entrant appears after the 2026 midterms."
+            ],
+            downside: [
+              "Multiple candidates show strength in early-state polling, preventing consolidation.",
+              "A post-midterms entrant draws elite and donor support quickly.",
+              "A major reputational event shifts favorability."
+            ]
+          },
+          citations: [
+            { label: "Polymarket, Democratic Presidential Nominee 2028", url: "https://polymarket.com/event/democratic-presidential-nominee-2028", note: "Market baseline and volume" }
+          ]
+        },
+        sources: [
+          { label: "Polymarket, Democratic Presidential Nominee 2028", url: "https://polymarket.com/event/democratic-presidential-nominee-2028" }
+        ],
+        tags: ["predictionmarkets","politics","us","democrats","nomination","2028","polls","fundraising","endorsements","sentiment"]
+      },
+
+      {
+        id: "pm-republican-nominee-2028",
+        category: "Prediction Markets",
+        categories: ["Prediction Markets","Politics"],
+        theme_key: "usa",
+        stamp: "R28",
+        title: "Republican Presidential Nominee 2028, market + scenario view",
+        summary: "The market prices an heir-apparent dynamic around the sitting Vice President. The main alternative is a fragmented multi-lane fight if performance or shocks break transfer momentum.",
+        due: "2028-11-07",
+        updated: "2025-12-17",
+        confidence: 56,
+        status: "warn",
+        call: "Base case (55%): heir-apparent lane consolidates, donors and party incentives coordinate around a single front-runner. Contest case (35%): factional lanes split and early states matter more. Shock case (10%): a major event reshuffles hierarchy. Market baseline (Polymarket): Vance 52%, Rubio 8.2%, Trump 4.8%, DeSantis 4.1%, Carlson 3.2%, Cruz 3.1%.",
+        band: "Wide",
+        most_likely_driver: "Party coordination around an heir-apparent versus factional fragmentation, especially after the 2026 midterms.",
+        drivers: [
+          "VP advantage and party coordination dynamics can compress the field early, unless performance shocks open factional lanes.",
+          "A crowded field increases the importance of early states and endorsement signals.",
+          "Media attention and perceived electability can shift quickly after major policy or geopolitical events."
+        ],
+        assumptions: [
+          "The current top contender remains eligible and willing to run.",
+          "No extraordinary legal or health event forces a sudden vacancy in the top tier.",
+          "Party elites and donors continue to behave as coordinating agents."
+        ],
+        market_meta: { platform: "Polymarket", volume: "$122.9m", expiry_note: "Nomination" },
+        quick_odds: [
+          { label: "Vance", pct: 52 },
+          { label: "Rubio", pct: 8.2 },
+          { label: "Trump", pct: 4.8 }
+        ],
+        market_odds: [
+          { label: "J.D. Vance", pct: 52 },
+          { label: "Marco Rubio", pct: 8.2 },
+          { label: "Donald Trump", pct: 4.8 },
+          { label: "Ron DeSantis", pct: 4.1 },
+          { label: "Tucker Carlson", pct: 3.2 },
+          { label: "Ted Cruz", pct: 3.1 },
+          { label: "Marjorie Taylor Greene", pct: 2.6 },
+          { label: "Donald Trump Jr.", pct: 2.0 },
+          { label: "Field/Other", pct: "—" }
+        ],
+        scenario_outlook: {
+          horizon: "Nomination cycle",
+          scenarios: [
+            { id: "A", label: "BASE. Heir-apparent consolidates", weight: 0.55 },
+            { id: "B", label: "FIGHT. Multi-lane contest", weight: 0.35 },
+            { id: "C", label: "SHOCK. Hierarchy reshuffles", weight: 0.10 }
+          ]
+        },
+        mpe_analysis: {
+          ticker: "GOP28",
+          exchange: "US Politics",
+          horizon_days: 1057,
+          horizon_end: "2028-11-07",
+          as_of: "2025-12-17",
+          price_anchor_label: "MARKET BASELINE (Polymarket)",
+          price_anchor: "Vance 52%, Rubio 8.2%",
+          currency: "",
+          volatility_posture: "High, long runway",
+          driver_chips: [
+            "Heir-apparent coordination",
+            "Factional lane fragmentation",
+            "Early-state momentum and endorsements",
+            "Shock sensitivity"
+          ],
+          verified_anchors: [
+            { title: "Market baseline", detail: "Polymarket implied probabilities for Republican Presidential Nominee 2028.", source: "Polymarket", url: "https://polymarket.com/event/republican-presidential-nominee-2028" }
+          ],
+          scenarios: [
+            { id: "A", name: "Base, heir-apparent lane consolidates", weight_pct: 55, conditions: ["Donor and party coordination begins early", "Performance signals remain supportive"], expected_behavior: "Front-runner maintains a dominant share and the field compresses." },
+            { id: "B", name: "Multi-candidate fight persists", weight_pct: 35, conditions: ["Factional lanes remain funded", "Early states split outcomes"], expected_behavior: "Probabilities redistribute and coalition math dominates." },
+            { id: "C", name: "Shock reshuffles hierarchy", weight_pct: 10, conditions: ["Major event changes perceived electability", "Top-tier eligibility or willingness changes"], expected_behavior: "Sudden repricing and larger 'Field' probability." }
+          ],
+          triggers: {
+            upside: [
+              "Endorsement and fundraising signals strengthen the front-runner lane.",
+              "Early-state polling shows a durable advantage."
+            ],
+            downside: [
+              "Multiple lanes gain traction and prevent consolidation.",
+              "A shock event or leadership change shifts the electability frame."
+            ]
+          },
+          citations: [
+            { label: "Polymarket, Republican Presidential Nominee 2028", url: "https://polymarket.com/event/republican-presidential-nominee-2028", note: "Market baseline and volume" }
+          ]
+        },
+        sources: [
+          { label: "Polymarket, Republican Presidential Nominee 2028", url: "https://polymarket.com/event/republican-presidential-nominee-2028" }
+        ],
+        tags: ["predictionmarkets","politics","us","republicans","nomination","2028","endorsements","fundraising","sentiment"]
+      },
+
+      {
+        id: "pm-presidential-winner-2028",
+        category: "Prediction Markets",
+        categories: ["Prediction Markets","Politics"],
+        theme_key: "usa",
+        stamp: "P28",
+        title: "Presidential Election Winner 2028, market + scenario view",
+        summary: "This market is the stitched composite of nominee odds plus national mood. Most likely path is baseline macro conditions and normal coalition behavior, with stress and shocks as the main weight-shifters.",
+        due: "2028-11-07",
+        updated: "2025-12-17",
+        confidence: 52,
+        status: "warn",
+        call: "Base case (45%): baseline macro and normal coalition behavior, nominee quality dominates at the margins. Macro-stress case (35%): affordability pain or recession shifts turnout and persuasion dynamics. Shock case (20%): a candidate-specific or geopolitical shock dominates. Market baseline (Polymarket): Vance 32%, Newsom 18%, AOC 8%, Trump 4.3%, Rubio 4%, Harris 4%.",
+        band: "Wide",
+        most_likely_driver: "Macro regime and nominee quality, with turnout composition and confidence shocks as high-leverage swing variables.",
+        drivers: [
+          "General elections are driven by macro regime and coalition turnout more than daily headlines.",
+          "Nominee quality acts as a multiplier when the macro environment is ambiguous.",
+          "Shock events can dominate late-cycle narratives and reprice probabilities quickly."
+        ],
+        assumptions: [
+          "No singular constitutional crisis changes the election timeline or rules.",
+          "Two-party nominees remain the central outcome structure.",
+          "Macro conditions remain the dominant driver of late-cycle mood."
+        ],
+        market_meta: { platform: "Polymarket", volume: "$152.2m", expiry_note: "Election" },
+        quick_odds: [
+          { label: "Vance", pct: 32 },
+          { label: "Newsom", pct: 18 },
+          { label: "AOC", pct: 8 }
+        ],
+        market_odds: [
+          { label: "JD Vance", pct: 32 },
+          { label: "Gavin Newsom", pct: 18 },
+          { label: "Alexandria Ocasio-Cortez", pct: 8 },
+          { label: "Donald Trump", pct: 4.3 },
+          { label: "Marco Rubio", pct: 4.0 },
+          { label: "Kamala Harris", pct: 4.0 },
+          { label: "Field/Other", pct: "—" }
+        ],
+        scenario_outlook: {
+          horizon: "Election cycle",
+          scenarios: [
+            { id: "A", label: "BASE. Normal coalition behavior", weight: 0.45 },
+            { id: "B", label: "STRESS. Macro pain shifts turnout", weight: 0.35 },
+            { id: "C", label: "SHOCK. Candidate/geopolitics event", weight: 0.20 }
+          ]
+        },
+        mpe_analysis: {
+          ticker: "POTUS28",
+          exchange: "US Politics",
+          horizon_days: 1057,
+          horizon_end: "2028-11-07",
+          as_of: "2025-12-17",
+          price_anchor_label: "MARKET BASELINE (Polymarket)",
+          price_anchor: "Vance 32%, Newsom 18%",
+          currency: "",
+          volatility_posture: "High, long runway",
+          driver_chips: [
+            "Macro regime and affordability",
+            "Turnout coalition composition",
+            "Nominee quality and electability",
+            "Late-cycle shocks"
+          ],
+          verified_anchors: [
+            { title: "Market baseline", detail: "Polymarket implied probabilities for Presidential Election Winner 2028.", source: "Polymarket", url: "https://polymarket.com/event/presidential-election-winner-2028" }
+          ],
+          scenarios: [
+            { id: "A", name: "Base, normal coalition behavior", weight_pct: 45, conditions: ["Macro remains mixed but stable", "Nominee quality differentiates at the margin"], expected_behavior: "The election behaves like a standard referendum on competence and stability." },
+            { id: "B", name: "Macro stress reshapes turnout and persuasion", weight_pct: 35, conditions: ["Affordability pain or recession increases", "Turnout and persuasion patterns shift"], expected_behavior: "Coalition composition changes, probabilities compress and swing." },
+            { id: "C", name: "Shock dominates narrative", weight_pct: 20, conditions: ["Major candidate-specific or geopolitical shock", "Institutional trust becomes central story"], expected_behavior: "Rapid repricing driven by uncertainty and narrative dominance." }
+          ],
+          triggers: {
+            upside: [
+              "Stable macro with improving real household conditions.",
+              "Nominee emerges with broad coalition appeal."
+            ],
+            downside: [
+              "Inflation or recession shock becomes salient to households.",
+              "Candidate-specific scandal, legal event, or foreign-policy shock dominates coverage."
+            ]
+          },
+          citations: [
+            { label: "Polymarket, Presidential Election Winner 2028", url: "https://polymarket.com/event/presidential-election-winner-2028", note: "Market baseline and volume" }
+          ]
+        },
+        sources: [
+          { label: "Polymarket, Presidential Election Winner 2028", url: "https://polymarket.com/event/presidential-election-winner-2028" }
+        ],
+        tags: ["predictionmarkets","politics","us","election","2028","macro","turnout","coalitions","sentiment"]
+      },
+
+      {
+        id: "pm-xi-jinping-out-2025",
+        category: "Prediction Markets",
+        categories: ["Prediction Markets","Politics"],
+        theme_key: "china",
+        stamp: "CN",
+        title: "Xi Jinping out in 2025, event-risk view (high opacity)",
+        summary: "A classic low-data, high-impact market. The correct professional posture is institutional continuity absent credible signals, with strict avoidance of rumor-chasing.",
+        due: "2025-12-31",
+        updated: "2025-12-17",
+        confidence: 78,
+        status: "warn",
+        call: "Base case (99%): no change, institutional continuity dominates. Managed-transition signal (0.7%): a credible official signal appears. Sudden shock (0.3%): discontinuity event. Market baseline (Polymarket): <1% Yes.",
+        band: "Narrow",
+        most_likely_driver: "Credible official confirmation, not social media noise. This is event-risk, not continuous forecasting.",
+        drivers: [
+          "High opacity environment makes rumors cheap and false positives common, so only verified institutional signals matter.",
+          "The market’s resolution definition is tied to Xi’s role as CCP General Secretary within a defined timeframe, not generic influence."
+        ],
+        assumptions: [
+          "No credible official announcement indicates removal from the General Secretary position within the timeframe.",
+          "No verified institutional disruption changes formal leadership structure.",
+          "Consensus credible reporting remains the resolution standard."
+        ],
+        market_meta: { platform: "Polymarket", volume: "$70.1m", expiry_note: "Event risk" },
+        quick_odds: [
+          { label: "No", pct: 99 },
+          { label: "Yes", pct: 1 }
+        ],
+        market_odds: [
+          { label: "No", pct: 99 },
+          { label: "Yes", pct: 1 }
+        ],
+        scenario_outlook: {
+          horizon: "Through Dec 31, 2025",
+          scenarios: [
+            { id: "A", label: "BASE. No change", weight: 0.99 },
+            { id: "B", label: "SIGNAL. Managed transition", weight: 0.007 },
+            { id: "C", label: "SHOCK. Sudden discontinuity", weight: 0.003 }
+          ]
+        },
+        mpe_analysis: {
+          ticker: "XI25",
+          exchange: "China",
+          horizon_days: 14,
+          horizon_end: "2025-12-31",
+          as_of: "2025-12-17",
+          price_anchor_label: "MARKET BASELINE (Polymarket)",
+          price_anchor: "<1% Yes",
+          currency: "",
+          volatility_posture: "Low probability, high impact",
+          driver_chips: [
+            "Official confirmation and credible reporting",
+            "Institutional continuity signals",
+            "Strict avoidance of rumor-driven false positives"
+          ],
+          verified_anchors: [
+            { title: "Market baseline and rules", detail: "Polymarket rules define removal from CCP General Secretary role between June 12 and Dec 31, 2025 11:59 PM ET.", source: "Polymarket", url: "https://polymarket.com/market/xi-jinping-out-in-2025" }
+          ],
+          scenarios: [
+            { id: "A", name: "Base, no change", weight_pct: 99, conditions: ["No credible official signal of removal", "Normal institutional continuity"], expected_behavior: "Market remains anchored near zero probability of 'Yes'." },
+            { id: "B", name: "Managed transition signal appears", weight_pct: 1, conditions: ["Multiple top-tier outlets confirm an official transition signal", "Institutional titles change"], expected_behavior: "Rapid repricing of event-risk." },
+            { id: "C", name: "Sudden shock discontinuity", weight_pct: 0, conditions: ["Discontinuous event occurs without long runway"], expected_behavior: "High uncertainty, rapid news-driven repricing." }
+          ],
+          triggers: {
+            upside: [
+              "Credible official announcement or verified multi-source reporting indicating a change in CCP General Secretary role."
+            ],
+            downside: [
+              "No credible signals through the horizon, reinforcing continuity."
+            ]
+          },
+          citations: [
+            { label: "Polymarket, Xi Jinping out in 2025? (rules and baseline)", url: "https://polymarket.com/market/xi-jinping-out-in-2025", note: "Market definition and volume" }
+          ]
+        },
+        sources: [
+          { label: "Polymarket, Xi Jinping out in 2025?", url: "https://polymarket.com/market/xi-jinping-out-in-2025" }
+        ],
+        tags: ["predictionmarkets","politics","china","eventrisk","highopacity","rules","verified-only"]
       }
 
     ];
+
 
     /* ==========================
        2) SIMPLE ROUTER AND UI
@@ -3098,10 +2723,16 @@ function fmtDate(iso){
     function themeKeyFor(p){
       if(!p) return "default";
 
-      // If a card belongs to multiple categories, prefer the most specific theme.
-      const cats = categoriesOf(p).map(x => x.toLowerCase());
+      if(p && typeof p.theme_key === "string" && p.theme_key.trim()){
+        return p.theme_key.trim();
+      }
+
+      const cats = categoriesOf(p).map(x => String(x || "").toLowerCase());
+
+      // Prefer the most specific theme when a card belongs to multiple categories.
       if(cats.includes("sports")) return "sports";
-      if(cats.includes("caribbean")){
+
+      if(cats.includes("caribbean") || String(p.category || "") === "Caribbean"){
         const area = String(p.carib_area || "").toLowerCase();
         if(area.includes("jamaica")) return "jamaica";
         if(area.includes("saint")) return "saintlucia";
@@ -3109,101 +2740,52 @@ function fmtDate(iso){
         return "caribbean";
       }
 
+      if(cats.includes("politics")){
+        const hay = ((p.title || "") + " " + (p.summary || "") + " " + (p.tags || []).join(" ")).toLowerCase();
+        if(hay.includes("portugal")) return "portugal";
+        if(hay.includes("xi") || hay.includes("jinping") || hay.includes("china")) return "china";
+        if(hay.includes("democratic") || hay.includes("republican") || hay.includes("presidential") || hay.includes("u.s.") || hay.includes("us ")) return "usa";
+        return "politics";
+      }
+
       const cat = String(p.category || "").trim();
       if(cat === "Financials" || cat === "Companies") return "norway";
       if(cat === "Tomorrow's Paper") return "paper";
       if(cat === "Crypto") return "crypto";
-      if(cat === "Sports") return "sports";
       if(cat === "OECS") return "oecs";
+      if(cat === "Sports") return "sports";
       return "default";
     }
 
-
-
-    function categoriesOf(p){
-      const out = [];
-      if(p && Array.isArray(p.categories)) out.push(...p.categories);
-      if(p && p.category) out.push(p.category);
-      const uniq = [];
-      const seen = new Set();
-      out.map(x => String(x || "").trim()).filter(Boolean).forEach(v => {
-        if(!seen.has(v)){
-          seen.add(v);
-          uniq.push(v);
-        }
-      });
-      return uniq;
-    }
-
-    function hasCategory(p, cat){
-      const target = String(cat || "").trim();
-      if(!target) return false;
-      return categoriesOf(p).some(x => x === target);
-    }
-
-    function categoryLabel(p){
-      const cats = categoriesOf(p);
-      if(cats.length <= 1) return cats[0] || "";
-      const primary = p && p.category ? String(p.category).trim() : cats[0];
-      const rest = cats.filter(x => x !== primary);
-      const shown = [primary, ...rest.slice(0,1)];
-      return shown.join(" · ");
-    }
-
-    function marketMetaHTML(p){
-      const m = p && p.market_meta ? p.market_meta : null;
-      if(!m) return "";
-      const parts = [];
-      if(m.platform) parts.push(`<span class="badge">${escapeHtml(m.platform)}</span>`);
-      if(m.volume) parts.push(`<span class="badge">Vol ${escapeHtml(m.volume)}</span>`);
-      if(m.expiry_note) parts.push(`<span class="badge">${escapeHtml(m.expiry_note)}</span>`);
-      return parts.length ? `<div class="pm-meta">${parts.join("")}</div>` : "";
-    }
-
-    function quickOddsHTML(p){
-      const q = p && Array.isArray(p.quick_odds) ? p.quick_odds : null;
-      if(!q || q.length === 0) return "";
-      const top = q.slice(0,3);
-      const rows = top.map(o => `
-        <div class="pm-odds-row">
-          <span class="pm-odds-name">${escapeHtml(o.label)}</span>
-          <span class="pm-odds-pct">${escapeHtml(String(o.pct))}%</span>
-        </div>
-      `).join("");
-      return `
-        <div class="pm-odds">
-          <div class="pm-odds-head">Market baseline</div>
-          ${rows}
-        </div>
-      `;
-    }
-
-    function marketOddsDetailHTML(p){
-      const arr = p && Array.isArray(p.market_odds) ? p.market_odds : null;
-      if(!arr || arr.length === 0) return "";
-      const rows = arr.map(o => `
-        <div class="pm-odds-row">
-          <span class="pm-odds-name">${escapeHtml(o.label)}</span>
-          <span class="pm-odds-pct">${escapeHtml(String(o.pct))}%</span>
-        </div>
-      `).join("");
-      return `
-        <details class="collapsible">
-          <summary>
-            <span>Market baseline</span>
-            <span class="cmeta">${arr.length}</span>
-          </summary>
-          <div class="cbody">
-            <div class="pm-odds-list">
-              ${rows}
-            </div>
-          </div>
-        </details>
-      `;
-    }
-
-function themeIconSVG(key){
+    function themeIconSVG(key){
       const k = String(key || "default");
+
+      if(k === "portugal"){
+        return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 20V5"/>
+          <path d="M5 6h11l-2 3 2 3H5"/>
+          <circle cx="9" cy="9" r="1.2" fill="currentColor" stroke="none"/>
+        </svg>`;
+      }
+      if(k === "usa"){
+        return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 2l2.6 6.2 6.7.6-5 4.3 1.6 6.5-5.9-3.5-5.9 3.5 1.6-6.5-5-4.3 6.7-.6z"/>
+        </svg>`;
+      }
+      if(k === "china"){
+        return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M7 7h10v10H7z"/>
+          <path d="M10.2 10.8l.9-2.2.9 2.2 2.4.2-1.9 1.4.7 2.3-2.1-1.3-2.1 1.3.7-2.3-1.9-1.4z" fill="currentColor" stroke="none" opacity=".9"/>
+        </svg>`;
+      }
+      if(k === "politics"){
+        return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M7 10h10v10H7z"/>
+          <path d="M9 10V7h6v3"/>
+          <path d="M10.5 15l1.3 1.3L14 14"/>
+        </svg>`;
+      }
+
       if(k === "jamaica"){
         return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M7 10h10v10H7z"/>
@@ -3266,10 +2848,108 @@ function themeIconSVG(key){
           <path d="M9 12h6"/>
         </svg>`;
       }
+
       return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M12 3l2.4 6.2L21 12l-6.6 2.8L12 21l-2.4-6.2L3 12l6.6-2.8z"/>
       </svg>`;
     }
+
+    function categoriesOf(p){
+      const out = [];
+      if(p && Array.isArray(p.categories)) out.push(...p.categories);
+      if(p && p.category) out.push(p.category);
+      const uniq = [];
+      const seen = new Set();
+      out.map(x => String(x || "").trim()).filter(Boolean).forEach(v => {
+        if(!seen.has(v)){
+          seen.add(v);
+          uniq.push(v);
+        }
+      });
+      return uniq;
+    }
+
+    function categoryLabel(p){
+      const cats = categoriesOf(p);
+      if(cats.length <= 1) return cats[0] || "";
+      const primary = p && p.category ? String(p.category).trim() : cats[0];
+      const rest = cats.filter(x => x !== primary);
+      const shown = [primary, ...rest.slice(0,1)];
+      return shown.join(" · ");
+    }
+
+    function stampFor(p){
+      if(p && typeof p.stamp === "string" && p.stamp.trim()) return p.stamp.trim();
+      const key = themeKeyFor(p);
+      const map = {
+        jamaica: "JM",
+        saintlucia: "SL",
+        caribbean: "CAR",
+        oecs: "OECS",
+        norway: "NO",
+        sports: "SPORT",
+        crypto: "CR",
+        paper: "TP",
+        portugal: "PT",
+        usa: "US",
+        china: "CN",
+        politics: "POL"
+      };
+      return map[key] || "";
+    }
+
+    function marketMetaHTML(p){
+      const m = p && p.market_meta ? p.market_meta : null;
+      if(!m) return "";
+      const parts = [];
+      if(m.platform) parts.push(`<span class="badge">${escapeHtml(m.platform)}</span>`);
+      if(m.volume) parts.push(`<span class="badge">Vol ${escapeHtml(m.volume)}</span>`);
+      if(m.expiry_note) parts.push(`<span class="badge">${escapeHtml(m.expiry_note)}</span>`);
+      return parts.length ? `<div class="pm-meta">${parts.join("")}</div>` : "";
+    }
+
+    function quickOddsHTML(p){
+      const q = p && Array.isArray(p.quick_odds) ? p.quick_odds : null;
+      if(!q || q.length === 0) return "";
+      const top = q.slice(0,3);
+      const rows = top.map(o => `
+        <div class="pm-odds-row">
+          <span class="pm-odds-name">${escapeHtml(o.label)}</span>
+          <span class="pm-odds-pct">${escapeHtml(String(o.pct))}${String(o.pct).includes("%") ? "" : "%"}</span>
+        </div>
+      `).join("");
+      return `
+        <div class="pm-odds">
+          <div class="pm-odds-head">Market baseline</div>
+          ${rows}
+        </div>
+      `;
+    }
+
+    function marketOddsDetailHTML(p){
+      const arr = p && Array.isArray(p.market_odds) ? p.market_odds : null;
+      if(!arr || arr.length === 0) return "";
+      const rows = arr.map(o => `
+        <div class="pm-odds-row">
+          <span class="pm-odds-name">${escapeHtml(o.label)}</span>
+          <span class="pm-odds-pct">${escapeHtml(String(o.pct))}${String(o.pct).includes("%") ? "" : "%"}</span>
+        </div>
+      `).join("");
+      return `
+        <details class="collapsible">
+          <summary>
+            <span>Market baseline</span>
+            <span class="cmeta">${arr.length}</span>
+          </summary>
+          <div class="cbody">
+            <div class="pm-odds-list">
+              ${rows}
+            </div>
+          </div>
+        </details>
+      `;
+    }
+
 function mostLikelyDriver(p){
       if(p && typeof p.most_likely_driver === "string" && p.most_likely_driver.trim()){
         return p.most_likely_driver.trim();
@@ -3935,14 +3615,21 @@ function buildTabs(){
       const conf = clamp(p.confidence ?? 0, 0, 100);
       const due = fmtDate(p.due);
       const upd = fmtDate(p.updated);
+      const theme = themeKeyFor(p);
+      const stamp = stampFor(p);
+      const isShort = !!p.short_horizon;
+
       return `
-        <article class="card" role="button" tabindex="0" aria-label="Open prediction details: ${escapeHtml(p.title)}" data-id="${escapeAttr(p.id)}" data-theme="${escapeAttr(themeKeyFor(p))}" ${p.short_horizon ? `data-short="1"` : ``}>
+        <article class="card" role="button" tabindex="0" aria-label="Open prediction details: ${escapeHtml(p.title)}"
+          data-id="${escapeAttr(p.id)}" data-theme="${escapeAttr(theme)}" ${isShort ? `data-short="1"` : ``}>
           <div class="card-inner">
+            ${stamp ? `<div class="stamp" aria-hidden="true">${escapeHtml(stamp)}</div>` : ``}
+
             <div class="kicker-row">
               <div class="chip">
-                <span class="ticon" aria-hidden="true">${themeIconSVG(themeKeyFor(p))}</span>
+                <span class="ticon" aria-hidden="true">${themeIconSVG(theme)}</span>
                 <span class="dot ${dotClass(p.status)}"></span>
-                <span>${escapeHtml(categoryLabel(p))}</span>
+                <span>${escapeHtml(categoryLabel(p) || p.category)}</span>
               </div>
               <div class="when">DUE ${escapeHtml(due)}</div>
             </div>
@@ -4151,7 +3838,7 @@ if(state.category === "Tomorrow's Paper"){
             <div class="chip" style="display:inline-flex;">
               <span class="ticon" aria-hidden="true">${themeIconSVG(themeKeyFor(p))}</span>
               <span class="dot ${dotClass(p.status)}"></span>
-              <span>${escapeHtml(categoryLabel(p))}</span>
+              <span>${escapeHtml(categoryLabel(p) || p.category)}</span>
             </div>
 
             <h2 class="view-title">${escapeHtml(p.title)}</h2>
@@ -4173,7 +3860,9 @@ if(state.category === "Tomorrow's Paper"){
             <h3>Scenario weights</h3>
             ${scenarioBarsHTML(p,"full")}
 
+            ${marketMetaHTML(p)}
             ${marketOddsDetailHTML(p)}
+
 
             ${mostLikelyDriver(p) ? `<div style="margin-top:10px; padding:10px 10px; border:1px solid rgba(255,255,255,.08); border-radius:14px; background: rgba(255,255,255,.03); font-family: var(--mono); font-size:11px; color: var(--muted); line-height:1.45;"><span style="color: var(--muted2);">MOST LIKELY DRIVER</span><br>${escapeHtml(mostLikelyDriver(p))}</div>` : ""}
 
@@ -4235,7 +3924,7 @@ if(state.category === "Tomorrow's Paper"){
               </div>
               <div class="row" style="grid-column: span 2;">
                 <div class="k">CATEGORY</div>
-                <div class="v">${escapeHtml(categoryLabel(p))}</div>
+                <div class="v">${escapeHtml(categoryLabel(p) || p.category)}</div>
               </div>
 
               ${p.market_meta ? `
