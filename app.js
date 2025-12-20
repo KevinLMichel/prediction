@@ -4,6 +4,7 @@
 
     const CATEGORIES = [
       "All",
+      "Briefs",
       "Prediction Markets",
       "Politics",
       "Sports",
@@ -21,6 +22,62 @@
       "OECS"
     ];
 
+
+    const PRODUCT_PROMISE = "Each week, I publish one scenario-weighted analysis of a real-world event, market, or decision point. I focus on probabilities, triggers, and what would change the outlook. This is for people who want clarity, not certainty.";
+
+    const PAYWALL = {
+      enabled: true,
+      subscribe_url: "https://buy.stripe.com/aFaeVc0V4c0O5jV6tPdMI00",
+      access_codes: ["MPE-FOUNDING-001"],
+      storage_key: "mpe.paywall.access.v1",
+      ttl_days: 45
+    };
+
+    function paywallLoad(){
+      try{
+        const raw = localStorage.getItem(PAYWALL.storage_key);
+        if(!raw) return null;
+        const obj = JSON.parse(raw);
+        if(!obj || typeof obj !== "object") return null;
+        return obj;
+      }catch(e){
+        return null;
+      }
+    }
+
+    function paywallHasAccess(){
+      if(!PAYWALL.enabled) return true;
+      const obj = paywallLoad();
+      if(!obj) return false;
+      if(obj.expires_at && typeof obj.expires_at === "number" && Date.now() > obj.expires_at) return false;
+      return true;
+    }
+
+    function paywallGrant(code){
+      const ttl = Math.max(1, Number(PAYWALL.ttl_days || 30));
+      const expiresAt = Date.now() + ttl*24*60*60*1000;
+      const payload = { code: String(code || "").trim(), granted_at: Date.now(), expires_at: expiresAt };
+      localStorage.setItem(PAYWALL.storage_key, JSON.stringify(payload));
+    }
+
+    function paywallClear(){
+      localStorage.removeItem(PAYWALL.storage_key);
+    }
+
+    function paywallValidate(code){
+      const c = String(code || "").trim();
+      if(!c) return false;
+      return Array.isArray(PAYWALL.access_codes) && PAYWALL.access_codes.includes(c);
+    }
+
+    function isPaywalled(p){
+      return !!(p && p.paywalled);
+    }
+
+    function isLocked(p){
+      return PAYWALL.enabled && isPaywalled(p) && !paywallHasAccess();
+    }
+
     // Confidence is 0 to 100.
     // status: "good" | "warn" | "bad" (drives the dot color).
     // due: ISO date string.
@@ -29,7 +86,133 @@
     const PREDICTIONS = [
       
        
+      
       {
+        id: "brief-001-fed-early-2026",
+        category: "Briefs",
+        title: "Brief #001: The U.S. Fed in early 2026, hold bias",
+        summary: "Baseline is HOLD in January and likely March, while the Fed verifies post-December-cut data. Scenario weights: Hold/Hold 55%, Hold/Cut (Mar) 25%, Cut (Jan) 15%, Hike or hawkish hold 5%.",
+        due: "2026-03-18",
+        updated: "2025-12-20",
+        confidence: 62,
+        status: "warn",
+        band: "Medium",
+        stamp: "BRIEF",
+        theme_key: "usa",
+        paywalled: true,
+        drivers: [
+          "December cut reduces urgency for a rapid follow-on move",
+          "Committee likely prefers verification after noisy prints",
+          "A pause preserves optionality while risks remain two-sided"
+        ],
+        scenarios: [
+          { id: "A", weight_pct: 55, headline_variant: "Hold in Jan and Mar, pause to verify", one_liner: "Fed pauses to confirm inflation and labor trends post-December cut." },
+          { id: "B", weight_pct: 25, headline_variant: "Hold Jan, cut Mar if data breaks dovish", one_liner: "March cut becomes plausible if disinflation is clean and labor softens further." },
+          { id: "C", weight_pct: 15, headline_variant: "Cut Jan on downside shock", one_liner: "Early cut only if labor rolls over fast or a stress event forces risk management." },
+          { id: "D", weight_pct: 5, headline_variant: "Hawkish hold or hike if inflation re-accelerates", one_liner: "Inflation risk resurfaces, the Fed leans hawkish to protect credibility." }
+        ],
+        triggers: [
+          "Dovish shift: repeated labor weakening plus clean disinflation",
+          "Hawkish shift: inflation re-accelerates or expectations rise",
+          "Tail-risk cut: financial stress event"
+        ],
+        longform: {
+          placeholder_id: "longform-brief-001-fed",
+          teaser: "Preview available. Full brief includes explicit change-my-mind thresholds and an early-2026 watchlist.",
+          button_label: "Read full brief",
+          locked_teaser: "Preview available. Full brief is subscriber-only, subscribe or enter your access code to unlock.",
+          locked_button_label: "Unlock full brief",
+          preview_html: `<p><strong>Baseline (HOLD-weighted):</strong> The Fed cut 25 bps in December. Early 2026 is most likely a pause, with the committee holding steady in January and very likely still holding in March while it confirms that inflation is cooling for the right reasons and that labor softening is real, not noise.</p>
+    <table class="mpe-table">
+      <thead>
+        <tr><th>Scenario</th><th style="width:120px;">Prob</th><th>Key triggers</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>HOLD Jan, HOLD Mar</td><td><strong>55%</strong></td><td>Mixed data, no urgency, committee prefers verification after the December cut</td></tr>
+        <tr><td>HOLD Jan, CUT Mar</td><td><strong>25%</strong></td><td>Clear disinflation plus further labor cooling across multiple releases</td></tr>
+        <tr><td>CUT Jan</td><td><strong>15%</strong></td><td>Sharp labor downside or a material financial stress event</td></tr>
+        <tr><td>HIKE or hawkish hold</td><td><strong>5%</strong></td><td>Inflation re-accelerates, expectations drift higher, policy credibility risk rises</td></tr>
+      </tbody>
+    </table>
+    <p><em>Subscriber-only section includes explicit “change-my-mind” thresholds and a watchlist for the January and March decision windows.</em></p>`,
+          html: `<h2>Scenario Brief #001, The U.S. Fed in early 2026: Hold, cut, or hike?</h2>
+
+    <p><strong>Executive call:</strong> HOLD is the baseline. After a December 25 bp cut, the committee has a strong incentive to observe transmission, verify cleaner post-shutdown data, and avoid a reflexive second cut before it sees at least a few more reads on inflation and labor.</p>
+
+    <h3>Policy calendar reality</h3>
+    <p>The “early 2026” window is dominated by the January 27 to 28 meeting and the March 17 to 18 meeting. That gap is the observation corridor.</p>
+
+    <h3>Scenario weights</h3>
+    <table class="mpe-table">
+      <thead>
+        <tr><th>Scenario</th><th style="width:120px;">Prob</th><th>What it means</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>A) HOLD Jan, HOLD Mar</strong> (baseline)</td>
+          <td><strong>55%</strong></td>
+          <td>Pause to verify inflation and labor trends post-December cut, committee keeps optionality</td>
+        </tr>
+        <tr>
+          <td><strong>B) HOLD Jan, CUT Mar</strong></td>
+          <td><strong>25%</strong></td>
+          <td>March cut becomes plausible if disinflation is clean and labor weakness persists across multiple releases</td>
+        </tr>
+        <tr>
+          <td><strong>C) CUT Jan</strong></td>
+          <td><strong>15%</strong></td>
+          <td>Fast cut only if something breaks, labor rolls over quickly, or financial stress forces a response</td>
+        </tr>
+        <tr>
+          <td><strong>D) HIKE or hawkish hold</strong></td>
+          <td><strong>5%</strong></td>
+          <td>Inflation re-accelerates, expectations rise, or policy credibility risk dominates the committee’s reaction function</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Baseline rationale (why HOLD dominates)</h3>
+    <ul>
+      <li><strong>Recency effect:</strong> a December cut reduces urgency for an immediate follow-on move.</li>
+      <li><strong>Verification need:</strong> the Fed is sensitive to noisy, distorted, or one-off prints, it prefers confirmation.</li>
+      <li><strong>Committee dispersion:</strong> divided votes and mixed rhetoric raise the bar for rapid repeat action.</li>
+      <li><strong>Asymmetric risk:</strong> cutting too early and reigniting inflation is reputationally expensive.</li>
+    </ul>
+
+    <h3>What would change my mind</h3>
+    <p>I shift weights only when the data crosses clear thresholds, not when it “feels” different.</p>
+    <ul>
+      <li><strong>Shift dovish (toward CUT sooner):</strong> unemployment rises materially and payroll momentum weakens across multiple releases, plus inflation cools without data quality caveats.</li>
+      <li><strong>Shift hawkish (away from CUT):</strong> inflation re-accelerates or expectations tick higher in a sustained way, with wage pressures refusing to cool.</li>
+      <li><strong>Shift to CUT Jan (tail-risk):</strong> a clear financial stress event or abrupt labor-market break that changes the Fed’s risk management posture.</li>
+    </ul>
+
+    <h3>Watchlist for the observation corridor</h3>
+    <ul>
+      <li>Core PCE and CPI trend, specifically whether disinflation continues in the components the Fed cares about.</li>
+      <li>Unemployment, participation, and payroll trend, consistency matters more than a single print.</li>
+      <li>Fed communication, whether “no urgency” language persists or shifts.</li>
+      <li>Financial conditions, credit spreads, funding stress, and risk appetite indicators.</li>
+    </ul>
+
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm" target="_blank" rel="noopener">FOMC meeting calendars, Federal Reserve</a></li>
+      <li><a href="https://www.federalreserve.gov/monetarypolicy/fomc.htm" target="_blank" rel="noopener">FOMC statements and documents, Federal Reserve</a></li>
+      <li><a href="https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20251210.htm" target="_blank" rel="noopener">Summary of Economic Projections, December 2025 (Fed)</a></li>
+    </ul>
+
+    <p style="margin-top:12px; color: var(--muted2); font-family: var(--mono); font-size: 11px; line-height: 1.5;">
+      Not investment advice. This is a scenario-weighted decision brief intended to clarify conditional paths and triggers.
+    </p>`
+        },
+        sources: [
+          { label: "Federal Reserve, FOMC calendars", url: "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm" },
+          { label: "Federal Reserve, FOMC statements and documents", url: "https://www.federalreserve.gov/monetarypolicy/fomc.htm" },
+          { label: "Fed, Summary of Economic Projections (Dec 2025)", url: "https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20251210.htm" }
+        ],
+        tags: ["brief","fed","rates","macro","usa","scenario-weights"]
+      },{
         id: "reach-oslo-scenario-weighted",
         category: "Financials",
         title: "REACH (Oslo Børs), scenario-weighted view, 3 to 6 month horizon",
@@ -3411,6 +3594,7 @@
     const elStatus = document.getElementById("status");
     const elListView = document.getElementById("listView");
     const elDetail = document.getElementById("detailView");
+    const elBriefHero = document.getElementById("briefHero");
 
     let state = {
       category: "All",
@@ -4033,26 +4217,74 @@ function mostLikelyDriver(p){
     function longformTeaserHTML(p){
       const lf = p && p.longform ? p.longform : null;
       if(!lf || !lf.placeholder_id) return "";
-      const teaser = lf.teaser || "A longform explainer is available for this analysis.";
-      const btn = lf.button_label || "Open longform";
+
+      const locked = isLocked(p);
+      const teaser = locked
+        ? (lf.locked_teaser || lf.teaser || "Preview available, full detail requires access.")
+        : (lf.teaser || "A longform explainer is available for this analysis.");
+
+      const btn = locked
+        ? (lf.locked_button_label || lf.button_label || "Unlock")
+        : (lf.button_label || "Open longform");
+
+      const subscribeUrl = (PAYWALL && PAYWALL.subscribe_url) ? PAYWALL.subscribe_url : "";
+
       return `
         <div style="margin-top:14px;">
-          <h3>Further reading</h3>
+          <h3>${locked ? "Subscriber brief" : "Further reading"}</h3>
           <div style="color: var(--muted); font-size:13px; line-height:1.55;">
             ${escapeHtml(teaser)}
           </div>
           <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
             <button class="btn" id="longformBtn">${escapeHtml(btn)}</button>
-            <span class="badge">Longform</span>
+            ${locked && subscribeUrl ? `<a class="btn secondary" href="${escapeAttr(subscribeUrl)}" target="_blank" rel="noopener">Subscribe</a>` : ``}
+            <span class="badge">${locked ? "Locked" : "Longform"}</span>
           </div>
         </div>
       `;
     }
 
-    function longformPlaceholderBlockHTML(p){
+function longformPlaceholderBlockHTML(p){
       const lf = p && p.longform ? p.longform : null;
       if(!lf || !lf.placeholder_id) return "";
       const pid = lf.placeholder_id;
+
+
+      // Soft paywall for subscriber briefs (static-site friendly).
+      if(isLocked(p)){
+        const subscribeUrl = (PAYWALL && PAYWALL.subscribe_url) ? PAYWALL.subscribe_url : "";
+        const preview = (lf && typeof lf.preview_html === "string" && lf.preview_html.trim()) ? lf.preview_html : "<p>Preview unavailable for this brief.</p>";
+        const ttl = Math.max(1, Number(PAYWALL.ttl_days || 30));
+
+        return `
+          <div class="mpe-block" id="${escapeAttr(pid)}">
+            <div class="mpe-subtle">Subscriber access</div>
+
+            <div class="paywall-card">
+              <div class="paywall-title">Unlock the full brief</div>
+              <div class="paywall-text">
+                Full detail is subscriber-only. Subscribe, then enter your access code here to unlock on this device.
+              </div>
+
+              <div class="paywall-actions">
+                ${subscribeUrl ? `<a class="btn" href="${escapeAttr(subscribeUrl)}" target="_blank" rel="noopener">Subscribe</a>` : ``}
+
+                <div class="paywall-code">
+                  <input class="pw-input" id="pwCode" placeholder="Access code" autocomplete="off" />
+                  <button class="btn secondary" id="pwUnlockBtn">Unlock</button>
+                </div>
+              </div>
+
+              <div class="paywall-hint">After unlocking once, this device stays unlocked for ${ttl} days.</div>
+            </div>
+
+            <div class="paywall-preview">
+              ${preview}
+            </div>
+          </div>
+        `;
+      }
+
 
       // If longform HTML is provided, render it here (trusted content, pasted by site owner).
       if(lf && typeof lf.html === "string" && lf.html.trim()){
@@ -4572,7 +4804,61 @@ if(state.category === "Tomorrow's Paper"){
       elStatus.textContent = `${shown} shown • ${total} total • category: ${state.category}${areaNote}`;
     }
 
-    function render(){
+    function latestBrief(){
+      const briefs = PREDICTIONS.filter(p => String(p.category || "") === "Briefs");
+      if(!briefs.length) return null;
+      briefs.sort((a,b) => String(b.updated || "").localeCompare(String(a.updated || "")));
+      return briefs[0] || null;
+    }
+
+    function renderBriefHero(){
+      if(!elBriefHero) return;
+
+      const b = latestBrief();
+      if(!b){
+        elBriefHero.innerHTML = "";
+        return;
+      }
+
+      const locked = isLocked(b);
+      const accessLabel = locked ? "Preview only" : "Full access";
+
+      const due = fmtDate(b.due);
+      const upd = fmtDate(b.updated);
+      const conf = clamp(b.confidence ?? 0, 0, 100);
+
+      const subscribeUrl = (PAYWALL && PAYWALL.subscribe_url) ? PAYWALL.subscribe_url : "";
+
+      elBriefHero.setAttribute("data-theme", themeKeyFor(b));
+      elBriefHero.innerHTML = `
+        <div class="brief-hero-inner">
+          <div class="brief-hero-kicker">Weekly scenario brief</div>
+          <div class="brief-hero-title">${escapeHtml(b.title)}</div>
+          <div class="brief-hero-promise">${escapeHtml(PRODUCT_PROMISE)}</div>
+
+          <div class="brief-hero-meta">
+            <span class="paywall-pill">ACCESS: <strong>${escapeHtml(accessLabel)}</strong></span>
+            <span class="paywall-pill">CONF: <strong>${conf}%</strong></span>
+            <span class="paywall-pill">UPD: <strong>${escapeHtml(upd)}</strong></span>
+            <span class="paywall-pill">DUE: <strong>${escapeHtml(due)}</strong></span>
+          </div>
+
+          <div class="brief-hero-actions">
+            <button class="btn" id="heroReadBrief">Read latest</button>
+            ${subscribeUrl ? `<a class="btn secondary" href="${escapeAttr(subscribeUrl)}" target="_blank" rel="noopener">Subscribe</a>` : ``}
+            ${locked ? `<span class="badge">Locked</span>` : `<span class="badge">Unlocked</span>`}
+          </div>
+        </div>
+        <div class="brief-hero-divider"></div>
+      `;
+
+      const btn = document.getElementById("heroReadBrief");
+      if(btn){
+        btn.addEventListener("click", () => openDetail(b.id));
+      }
+    }
+
+function render(){
       buildTabs();
       setActiveTab();
       buildSubtabs();
@@ -4583,6 +4869,7 @@ if(state.category === "Tomorrow's Paper"){
       const filtered = filterData();
       const sorted = sortData(filtered);
 
+      renderBriefHero();
       renderGrid(sorted);
       renderStatus(sorted);
 
@@ -4792,6 +5079,35 @@ if(state.category === "Tomorrow's Paper"){
       });
 
       detailsAutoCloseOnMobile();
+
+
+      // Paywall unlock wiring (static site).
+      const pwBtn = document.getElementById("pwUnlockBtn");
+      const pwInput = document.getElementById("pwCode");
+      if(pwBtn && pwInput){
+        const attempt = () => {
+          const code = String(pwInput.value || "").trim();
+          if(paywallValidate(code)){
+            paywallGrant(code);
+            renderDetail(p);
+            setTimeout(() => {
+              const pid = p && p.longform ? p.longform.placeholder_id : null;
+              const target = pid ? document.getElementById(pid) : null;
+              if(target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 30);
+          } else {
+            pwInput.focus();
+            pwInput.select();
+            alert("Invalid access code.");
+          }
+        };
+
+        pwBtn.addEventListener("click", attempt);
+        pwInput.addEventListener("keydown", (e) => {
+          if(e.key === "Enter") attempt();
+        });
+      }
+
 
       const lfBtn = document.getElementById("longformBtn");
       if(lfBtn && p.longform && p.longform.placeholder_id){
