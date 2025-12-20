@@ -997,3 +997,125 @@
       .brand{ min-width: 0; }
     }
   
+
+/* Briefs + Paywall */
+.brief-hero{
+  margin: 18px 0 14px;
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 18px;
+  overflow: hidden;
+  background:
+    radial-gradient(220px 120px at 18% 30%, rgba(var(--theme-a-rgb, 110,231,255), .18), transparent 70%),
+    radial-gradient(220px 120px at 78% 55%, rgba(var(--theme-b-rgb, 167,139,250), .16), transparent 72%),
+    linear-gradient(180deg, rgba(11,18,38,.72), rgba(10,16,34,.44));
+}
+.brief-hero-inner{
+  padding: 14px 14px;
+}
+.brief-hero-kicker{
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted2);
+}
+.brief-hero-title{
+  margin-top: 6px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+.brief-hero-promise{
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+  max-width: 84ch;
+}
+.brief-hero-meta{
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  color: var(--muted2);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+.brief-hero-actions{
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.brief-hero-divider{
+  height: 1px;
+  background: rgba(255,255,255,.08);
+}
+.paywall-card{
+  margin-top: 10px;
+  padding: 12px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+}
+.paywall-title{
+  font-weight: 700;
+}
+.paywall-text{
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.paywall-actions{
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.paywall-code{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.pw-input{
+  width: 220px;
+  max-width: 80vw;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.20);
+  color: var(--text);
+  outline: none;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+.pw-input:focus{
+  border-color: rgba(110,231,255,.45);
+  box-shadow: 0 0 0 2px rgba(110,231,255,.12);
+}
+.paywall-hint{
+  margin-top: 8px;
+  color: var(--muted2);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.45;
+}
+.paywall-preview{
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+.paywall-pill{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+}
